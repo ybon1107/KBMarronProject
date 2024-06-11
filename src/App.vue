@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <Header />
-        <router-view />
+        <!-- <router-view /> -->
         <Loading v-if="states.isLoading" />
     </div>
 </template>
@@ -10,7 +10,7 @@ import { reactive, computed, provide } from 'vue';
 import Header from '@/components/Header.vue';
 import axios from 'axios';
 import Loading from '@/components/Loading.vue';
-const BASEURI = '/api/ledger';
+const BASEURI = '/api/todos';
 const states = reactive({ todoList: [] });
 const fetchTodoList = async () => {
     states.isLoading = true;
@@ -26,10 +26,13 @@ const fetchTodoList = async () => {
     }
     states.isLoading = false;
 };
-const addTodo = async ({ todo, desc }, successCallback) => {
+const addTodo = async (
+    { type, transaction, asset, amount, date, memo },
+    successCallback
+) => {
     states.isLoading = true;
     try {
-        const payload = { todo, desc };
+        const payload = { type, transaction, asset, amount, date, memo };
         const response = await axios.post(BASEURI, payload);
         if (response.status === 201) {
             states.todoList.push({ ...response.data, done: false });
@@ -42,10 +45,13 @@ const addTodo = async ({ todo, desc }, successCallback) => {
     }
     states.isLoading = false;
 };
-const updateTodo = async ({ id, todo, desc, done }, successCallback) => {
+const updateTodo = async (
+    { id, transaction, type, asset, amount, date, memo },
+    successCallback
+) => {
     states.isLoading = true;
     try {
-        const payload = { id, todo, desc, done };
+        const payload = { id, transaction, type, asset, amount, date, memo };
         const response = await axios.put(BASEURI + `/${id}`, payload);
         if (response.status === 200) {
             let index = states.todoList.findIndex((todo) => todo.id === id);
@@ -96,12 +102,6 @@ provide(
     'todoList',
     computed(() => states.todoList)
 );
-provide('actions', {
-    addTodo,
-    deleteTodo,
-    toggleDone,
-    updateTodo,
-    fetchTodoList,
-});
+provide('actions', { addTodo, deleteTodo, updateTodo, fetchTodoList });
 fetchTodoList();
 </script>

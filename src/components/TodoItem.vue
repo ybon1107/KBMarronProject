@@ -6,7 +6,17 @@
     <td>{{ todoItem.amount }}</td>
     <td>{{ todoItem.memo }}</td>
     <td>
-      <button @click="deleteTodoItem(todoItem.id)">삭제</button>
+      <span
+        class="float-end badge bg-secondary pointer m-1"
+        @click="router.push(`/todos/edit/${todoItem.id}`)"
+      >
+        편집</span
+      >
+      <span
+        class="float-end badge bg-secondary pointer m-1"
+        @click="deleteTodo(todoItem.id)"
+        >삭제</span
+      >
     </td>
   </tr>
 </template>
