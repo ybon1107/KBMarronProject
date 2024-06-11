@@ -1,7 +1,6 @@
 <template>
   <tr>
     <td>{{ todoItem.date }}</td>
-    <td>{{ todoItem.transaction }}</td>
     <td>{{ todoItem.asset }}</td>
     <td>{{ todoItem.type }}</td>
     <td>{{ todoItem.amount }}</td>

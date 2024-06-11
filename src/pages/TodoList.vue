@@ -19,24 +19,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="todoItem in todoList" :key="todoItem.id">
-          <td>{{ todoItem.date }}</td>
-          <td>{{ todoItem.transaction }}</td>
-          <td>{{ todoItem.asset }}</td>
-          <td>{{ todoItem.type }}</td>
-          <td>{{ todoItem.amount }}</td>
-          <td>{{ todoItem.memo }}</td>
-          <td>
-            <router-link class="btn btn-info" :to="'/todos/edit/' + todoItem.id"
-              >수정</router-link
-            >
-          </td>
-          <td>
-            <button class="btn btn-danger" @click="deleteTodoItem(todoItem.id)">
-              삭제
-            </button>
-          </td>
-        </tr>
+        <TodoItem
+          v-for="todoItem in todoList"
+          :key="todoItem.id"
+          :todoItem="todoItem"
+        />
       </tbody>
     </table>
   </div>
@@ -44,7 +31,7 @@
 
 <script setup>
 import { inject } from 'vue';
-//import TodoItem from '@/components/TodoItem.vue';
+import TodoItem from '@/components/TodoItem.vue';
 const todoList = inject('todoList');
 
 const deleteTodoItem = (id) => {

@@ -45,7 +45,7 @@ const isNavShow = ref(false);
 
 <style scoped>
 .d-flex {
-  height: 100vh; /* 전체 화면 높이를 차지하도록 설정 */
+    height: 100vh; /* 전체 화면 높이를 차지하도록 설정 */
 }
 
 .navbar {
@@ -54,16 +54,16 @@ const isNavShow = ref(false);
 }
 
 .content {
-  padding: 20px; /* 컨텐츠 영역에 패딩을 추가 */
+    padding: 20px; /* 컨텐츠 영역에 패딩을 추가 */
 }
 
 .custom-navbar {
-  background-color: beige;
-  color: black;
+    background-color: beige;
+    color: black;
 }
 
 .custom-navbar .nav-link {
-  color: purple;
+    color: purple;
 }
 
 .custom-navbar .navbar-brand {
