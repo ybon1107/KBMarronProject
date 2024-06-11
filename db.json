@@ -1,15 +1,6 @@
 {
   "todos": [
     {
-      "id": "2",
-      "transaction": "이체",
-      "type": "월세",
-      "asset": "계좌이체",
-      "amount": 1200,
-      "date": "2024-06-01",
-      "memo": "미진빌라"
-    },
-    {
       "id": "3",
       "transaction": "이체",
       "type": "기타",
