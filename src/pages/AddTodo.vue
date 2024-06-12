@@ -6,100 +6,54 @@
   </div>
   <div class="row">
     <div class="col">
-      <div class="tab-buttons">
-        <button :class="{ active: selectedTab === '수입' }" @click="selectTab('수입')">수입</button>
-        <button :class="{ active: selectedTab === '지출' }" @click="selectTab('지출')">지출</button>
-        <button :class="{ active: selectedTab === '이체' }" @click="selectTab('이체')">이체</button>
+      <div class="form-group">
+        <label htmlfor="transaction">거래 유형:</label><br />
+        <label>
+          <input type="radio" v-model="todoItem.transaction" value="수입" />
+          수입
+        </label>
+        <label>
+          <input type="radio" v-model="todoItem.transaction" value="지출" />
+          지출
+        </label>
+        <label>
+          <input type="radio" v-model="todoItem.transaction" value="이체" />
+          이체
+        </label>
       </div>
-      <div v-if="selectedTab === '수입'">
-        <div class="form-group">
-          <label htmlfor="date">날짜:</label>
-          <input type="date" class="form-control" id="date" v-model="todoItem.date" />
-        </div>
-        <div class="form-group">
-          <label htmlFor="amount">금액 :</label>
-          <input type="text" class="form-control" id="amount" v-model="todoItem.amount" @keypress="allowOnlyNumbers" />
-        </div>
-        <div class="form-group">
-          <label for="type">분류:</label>
-          <select class="form-control" id="type" v-model="todoItem.type">
-            <option disabled value="">분류 선택</option>
-            <option v-for="type in income_types" :key="type" :value="type">
-              {{ type }}
-            </option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label htmlFor="memo">내용 :</label>
-          <input type="text" class="form-control" id="memo" v-model="todoItem.memo" />
-        </div>
-        <div class="form-group">
-          <button type="button" class="btn btn-primary m-1" @click="addTodoHandler">저 장</button>
-          <button type="button" class="btn btn-primary m-1" @click="router.push('/todos')">취 소</button>
-        </div>
+      <div class="form-group">
+        <label htmlfor="date">날짜:</label>
+        <input type="date" class="form-control" id="date" v-model="todoItem.date" />
       </div>
-      <div v-if="selectedTab === '지출'">
-        <div class="form-group">
-          <label htmlfor="date">날짜:</label>
-          <input type="date" class="form-control" id="date" v-model="todoItem.date" />
-        </div>
-        <div class="form-group">
-          <label htmlFor="amount">금액 :</label>
-          <input type="text" class="form-control" id="amount" v-model="todoItem.amount" @keypress="allowOnlyNumbers" />
-        </div>
-        <div class="form-group">
-          <label for="type">분류:</label>
-          <select class="form-control" id="type" v-model="todoItem.type">
-            <option disabled value="">분류 선택</option>
-            <option v-for="type in expenses_types" :key="type" :value="type">
-              {{ type }}
-            </option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="asset">자산:</label>
-          <select class="form-control" id="asset" v-model="todoItem.asset">
-            <option disabled value="">자산 선택</option>
-            <option v-for="asset in assets" :key="asset" :value="asset">
-              {{ asset }}
-            </option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label htmlFor="memo">내용 :</label>
-          <input type="text" class="form-control" id="memo" v-model="todoItem.memo" />
-        </div>
-        <div class="form-group">
-          <button type="button" class="btn btn-primary m-1" @click="addTodoHandler">저 장</button>
-          <button type="button" class="btn btn-primary m-1" @click="router.push('/todos')">취 소</button>
-        </div>
+      <div class="form-group">
+        <label htmlFor="amount">금액 :</label>
+        <input type="text" class="form-control" id="amount" v-model="todoItem.amount" @keypress="allowOnlyNumbers" />
       </div>
-      <div v-if="selectedTab === '이체'">
-        <div class="form-group">
-          <label htmlfor="date">날짜:</label>
-          <input type="date" class="form-control" id="date" v-model="todoItem.date" />
-        </div>
-        <div class="form-group">
-          <label for="type">분류:</label>
-          <select class="form-control" id="type" v-model="todoItem.type">
-            <option disabled value="">분류 선택</option>
-            <option v-for="type in types" :key="type" :value="type">
-              {{ type }}
-            </option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label htmlFor="amount">금액 :</label>
-          <input type="text" class="form-control" id="amount" v-model="todoItem.amount" @keypress="allowOnlyNumbers" />
-        </div>
-        <div class="form-group">
-          <label htmlFor="memo">내용 :</label>
-          <input type="text" class="form-control" id="memo" v-model="todoItem.memo" />
-        </div>
-        <div class="form-group">
-          <button type="button" class="btn btn-primary m-1" @click="addTodoHandler">저 장</button>
-          <button type="button" class="btn btn-primary m-1" @click="router.push('/todos')">취 소</button>
-        </div>
+      <div class="form-group">
+        <label for="type">분류:</label>
+        <select class="form-control" id="type" v-model="todoItem.type">
+          <option disabled value="">분류 선택</option>
+          <option v-for="type in types" :key="type" :value="type">
+            {{ type }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="asset">자산:</label>
+        <select class="form-control" id="asset" v-model="todoItem.asset">
+          <option disabled value="">자산 선택</option>
+          <option v-for="asset in assets" :key="asset" :value="asset">
+            {{ asset }}
+          </option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label htmlFor="memo">내용 :</label>
+        <input type="text" class="form-control" id="memo" v-model="todoItem.memo" />
+      </div>
+      <div class="form-group">
+        <button type="button" class="btn btn-primary m-1" @click="addTodoHandler">저 장</button>
+        <button type="button" class="btn btn-primary m-1" @click="router.push('/todos')">취 소</button>
       </div>
     </div>
   </div>
@@ -111,7 +65,7 @@ const todoItem = ref({
   date: '',
   memo: '',
   asset: '',
-  transaction: '지출',
+  transaction: '',
   amount: 0,
   type: '',
 });
@@ -130,23 +84,18 @@ const types = ['입금', '출금'];
 const assets = ['카드', '현금'];
 const addTodoHandler = () => {
   const { date, memo, asset, transaction, amount, type } = todoItem.value;
-  if (!date || !memo || !transaction || !amount || !type) {
+  if (!date || !memo || !asset || !transaction || !amount || !type) {
     alert('모든 필드를 입력해주세요.');
     return;
   }
   // 수입인 경우 '+'를 추가합니다.
   if (transaction === '수입') {
     todoItem.value.amount = todoItem.value.amount;
-    todoItem.value.asset = '-';
   }
   // 지출 또는 이체인 경우 '-'를 추가하고 빨간색으로 변경합니다.
   else {
     todoItem.value.amount = todoItem.value.amount;
-    todoItem.value.asset = '이체';
   }
-  // if (!asset) {
-
-  // }
   addTodo({ ...todoItem.value }, () => {
     router.push('/todos');
   });
