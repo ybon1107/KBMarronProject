@@ -6,14 +6,20 @@
             <a href="#" @click.prevent="onClickNext">▶</a>
         </h2>
         <table class="table table-hover">
+            <thead>
+                <tr>
+                    <td v-for="(weekName, index) in weekNames" :key="index">
+                        {{ weekName }}
+                    </td>
+                </tr>
+            </thead>
             <tbody>
                 <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
                     <td
                         v-for="(day, index2) in row"
                         :key="index2"
                         style="padding: 20px"
-                        @click="handleDateClick(day)"
-                        :class="{ hoverable: day !== '' }"
+                        @click="day !== '' && onDateClick(day)"
                     >
                         <span
                             v-if="
@@ -37,24 +43,17 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-const selectedDate = ref(null); // 선택한 날짜를 저장하는 변수
 
 const router = useRouter();
-function handleDateClick(day) {
-    if (day !== '') {
-        selectedDate.value = day; // 선택한 날짜 저장
-        router.push('/todos/add'); // AddTodo 페이지로 이동
-    }
-}
 
 const weekNames = [
+    '일요일',
     '월요일',
     '화요일',
     '수요일',
     '목요일',
     '금요일',
     '토요일',
-    '일요일',
 ];
 const rootYear = 1904;
 const rootDayOfWeekIndex = 4; // 2000년 1월 1일은 토요일
@@ -134,7 +133,7 @@ function getStartWeek(targetYear, targetMonth) {
                 sumOfDay += getEndOfDay(year, month);
                 month++;
             } else if (targetMonth === month) {
-                return sumOfDay % 7;
+                return (sumOfDay + 1) % 7;
             }
         }
     }
@@ -166,25 +165,37 @@ function isToday(year, month, day) {
         day === date.getDate()
     );
 }
+
+// 클릭시 addTodo로 이동시키는 코드 4:17 추가
+function onDateClick(day) {
+    if (day !== '') {
+        const selectedDate = new Date(
+            currentYear.value,
+            currentMonth.value - 1,
+            day + 1
+        );
+        router.push({
+            path: '/todos/add',
+            query: { date: selectedDate.toISOString().split('T')[0] },
+        });
+    }
+}
 </script>
 
 <style scoped>
 .rounded {
     border-radius: 20px;
     border: solid 1px #ffffff;
-    background-color: #2b6bd1;
+    background-color: #ffcd28;
     padding: 10px;
     color: #ffffff;
 }
 .table td {
     width: 150px; /* 각 날짜 칸의 너비를 조절하세요 */
-    height: 150px; /* 각 날짜 칸의 높이를 조절하세요 */
+    height: 100px; /* 각 날짜 칸의 높이를 조절하세요 */
 }
-.hoverable {
+.table td:hover {
+    background-color: #ffcc80; /* 연한 주황색 */
     cursor: pointer;
-}
-.hovered {
-    background-color: #a1c4fd;
-    color: #ffffff;
 }
 </style>

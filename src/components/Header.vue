@@ -20,7 +20,6 @@
       >
         <ul class="navbar-nav flex-column mt-3">
           <!-- flex-column 클래스를 추가하여 세로 정렬 -->
-
           <li class="nav-item">
             <router-link class="nav-link" to="/todos"> 내역 </router-link>
           </li>
@@ -34,6 +33,10 @@
       <!-- 나머지 화면 공간을 차지하는 컨텐츠 -->
       <router-view></router-view>
     </div>
+    <!-- 우측 상단 데이터 창 -->
+    <!-- <div class="data-panel d-flex justify-content-center align-items-center">
+      총잔액값표시
+    </div> -->
   </div>
 </template>
 
@@ -45,7 +48,9 @@ const isNavShow = ref(false);
 
 <style scoped>
 .d-flex {
-    height: 100vh; /* 전체 화면 높이를 차지하도록 설정 */
+  height: 100vh; /* 전체 화면 높이를 차지하도록 설정 */
+  position: relative;
+  display: flex;
 }
 
 .navbar {
@@ -54,20 +59,33 @@ const isNavShow = ref(false);
 }
 
 .content {
-    padding: 20px; /* 컨텐츠 영역에 패딩을 추가 */
+  padding: 20px; /* 컨텐츠 영역에 패딩을 추가 */
 }
 
 .custom-navbar {
-    background-color: beige;
-    color: black;
+  background-color: beige;
+  color: black;
 }
 
 .custom-navbar .nav-link {
-    color: purple;
+  color: purple;
 }
 
 .custom-navbar .navbar-brand {
   color: black;
   margin-bottom: 40px; /* 브랜드와 다른 항목 간의 간격 추가 */
 }
+
+/* .data-panel {
+  position: absolute; 
+  top: 0;
+  right: 0; 
+  height: 80%; 
+  display: flex; 
+  flex-direction: row; 
+  background-color: #f0f0f0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  display: flex;
+} */
 </style>
