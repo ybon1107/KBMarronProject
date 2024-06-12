@@ -23,28 +23,11 @@
       </div>
       <div class="form-group">
         <label htmlfor="date">날짜:</label>
-        <input
-          type="date"
-          class="form-control"
-          id="date"
-          v-model="todoItem.date"
-        />
+        <input type="date" class="form-control" id="date" v-model="todoItem.date" />
       </div>
       <div class="form-group">
         <label htmlFor="amount">금액 :</label>
-        <input
-          type="text"
-          class="form-control"
-          id="amount"
-          v-model="todoItem.amount"
-          :class="{
-            'text-blue': todoItem.transaction === '수입',
-            'text-red':
-              todoItem.transaction === '지출' ||
-              todoItem.transaction === '이체',
-          }"
-          @keypress="allowOnlyNumbers"
-        />
+        <input type="text" class="form-control" id="amount" v-model="todoItem.amount" @keypress="allowOnlyNumbers" />
       </div>
       <div class="form-group">
         <label for="type">분류:</label>
@@ -66,28 +49,11 @@
       </div>
       <div class="form-group">
         <label htmlFor="memo">내용 :</label>
-        <input
-          type="text"
-          class="form-control"
-          id="memo"
-          v-model="todoItem.memo"
-        />
+        <input type="text" class="form-control" id="memo" v-model="todoItem.memo" />
       </div>
       <div class="form-group">
-        <button
-          type="button"
-          class="btn btn-primary m-1"
-          @click="addTodoHandler"
-        >
-          저 장
-        </button>
-        <button
-          type="button"
-          class="btn btn-primary m-1"
-          @click="router.push('/todos')"
-        >
-          취 소
-        </button>
+        <button type="button" class="btn btn-primary m-1" @click="addTodoHandler">저 장</button>
+        <button type="button" class="btn btn-primary m-1" @click="router.push('/')">취 소</button>
       </div>
     </div>
   </div>

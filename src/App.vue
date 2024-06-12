@@ -11,7 +11,9 @@ import Header from '@/components/Header.vue';
 import axios from 'axios';
 import Loading from '@/components/Loading.vue';
 const BASEURI = '/api/todos';
-const states = reactive({ todoList: [] });
+const states = reactive({
+  todoList: [],
+});
 const fetchTodoList = async () => {
   states.isLoading = true;
   try {
@@ -92,6 +94,7 @@ const toggleDone = async (id) => {
   }
   states.isLoading = false;
 };
+
 provide(
   'todoList',
   computed(() => states.todoList)

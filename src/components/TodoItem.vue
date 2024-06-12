@@ -5,8 +5,7 @@
     <td
       :class="{
         'text-blue': todoItem.transaction === '수입',
-        'text-red':
-          todoItem.transaction === '지출' || todoItem.transaction === '이체',
+        'text-red': todoItem.transaction === '지출' || todoItem.transaction === '이체',
       }"
     >
       {{ todoItem.transaction }}
@@ -15,15 +14,11 @@
     <td
       :class="{
         'text-blue': todoItem.transaction === '수입',
-        'text-red':
-          todoItem.transaction === '지출' || todoItem.transaction === '이체',
+        'text-red': todoItem.transaction === '지출' || todoItem.transaction === '이체',
       }"
     >
       <!-- 수입이면 +를, 지출이나 이체이면 -를 앞에 붙입니다 -->
-      {{
-        (todoItem.transaction === '수입' ? '+' : '-') +
-        Math.abs(todoItem.amount)
-      }}
+      {{ (todoItem.transaction === '수입' ? '+' : '-') + Math.abs(todoItem.amount) }}
     </td>
     <td>{{ todoItem.memo }}</td>
     <td>
@@ -33,11 +28,7 @@
       >
         편집</span
       > -->
-      <span
-        class="float-end badge bg-secondary pointer m-1"
-        @click="deleteTodo(todoItem.id)"
-        >삭제</span
-      >
+      <span class="float-end badge bg-secondary pointer m-1" @click="deleteTodo(todoItem.id)">삭제</span>
     </td>
   </tr>
 </template>

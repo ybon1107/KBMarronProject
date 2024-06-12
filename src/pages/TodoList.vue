@@ -2,6 +2,21 @@
   <div>
     <h3>내역</h3>
   </div>
+
+  <div>
+    <!-- 상단에 총 지출, 총 수입, 총 사용금액 표시 -->
+    <div class="row mt-3">
+      <div class="col">
+        <h3>총 지출: {{ totalExpense }} 원</h3>
+      </div>
+      <div class="col">
+        <h3>총 수입: {{ totalIncome }} 원</h3>
+      </div>
+      <div class="col">
+        <h3>총 사용금액: {{ totalExpenseIncomeDiff }} 원</h3>
+      </div>
+    </div>
+  </div>
   <div class="row">
     <div class="col">
       <!-- 날짜 이동 버튼 -->
@@ -40,11 +55,36 @@
 <script setup>
 import { ref, inject, computed } from 'vue';
 import TodoItem from '@/components/TodoItem.vue';
-
+import { useRouter } from 'vue-router';
 const todoList = inject('todoList');
 const currentDate = ref(new Date());
 const selectedMonth = ref(currentDate.value.toISOString().slice(0, 7));
+// 총 지출을 계산하는 함수
+const totalExpense = computed(() => {
+  let total = 0;
+  todoList.value.forEach((todo) => {
+    if (todo.transaction === '지출' || todo.transaction === '이체') {
+      total += parseInt(todo.amount);
+    }
+  });
+  return total;
+});
 
+// 총 수입을 계산하는 함수
+const totalIncome = computed(() => {
+  let total = 0;
+  todoList.value.forEach((todo) => {
+    if (todo.transaction === '수입') {
+      total += parseInt(todo.amount);
+    }
+  });
+  return total;
+});
+
+// 총 사용금액을 계산하는 함수
+const totalExpenseIncomeDiff = computed(() => {
+  return totalIncome.value - totalExpense.value;
+});
 const filteredTodoList = computed(() => {
   // 선택된 월에 해당하는 항목만 필터링
   const filteredItems = todoList.value.filter((todoItem) => {
