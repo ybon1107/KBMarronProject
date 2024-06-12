@@ -49,7 +49,7 @@
                     class="form-control"
                     id="amount"
                     v-model="todoItem.amount"
-                    @keypress="allowOnlyNumbers"
+                    @input="filterNonNumeric"
                 />
             </div>
             <div class="form-group">
@@ -94,7 +94,7 @@
                 <button
                     type="button"
                     class="btn btn-primary m-1"
-                    @click="router.push('/todos')"
+                    @click="router.push('/')"
                 >
                     취 소
                 </button>
@@ -134,10 +134,8 @@ onMounted(() => {
     }
 });
 // 숫자 이외의 키 입력시 막음
-const allowOnlyNumbers = (event) => {
-    const charCode = event.which ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-        event.preventDefault();
-    }
+const filterNonNumeric = (event) => {
+    const value = event.target.value;
+    todoItem.value.amount = value.replace(/[^0-9]/g, '');
 };
 </script>
