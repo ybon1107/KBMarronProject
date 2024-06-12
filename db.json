@@ -1,31 +1,67 @@
 {
-    "todos": [
-        {
-            "id": "2",
-            "transaction": "이체",
-            "type": "월세",
-            "asset": "계좌이체",
-            "amount": 1200,
-            "date": "2024-06-01",
-            "memo": "미진빌라"
-        },
-        {
-            "id": "3",
-            "transaction": "이체",
-            "type": "기타",
-            "asset": "현금",
-            "amount": 200,
-            "date": "2024-06-02",
-            "memo": "노래방감"
-        },
-        {
-            "id": "4",
-            "transaction": "출금",
-            "type": "교통",
-            "asset": "카드",
-            "amount": 50,
-            "date": "2024-06-03",
-            "memo": "지하철"
-        }
-    ]
+  "todos": [
+    {
+      "id": "ca83",
+      "type": "교통",
+      "transaction": "지출",
+      "asset": "현금",
+      "amount": "ㅍㅇㅍ",
+      "date": "2024-05-30",
+      "memo": "ㅍㅈㅍ"
+    },
+    {
+      "id": "a658",
+      "type": "월세",
+      "transaction": "지출",
+      "asset": "카드",
+      "amount": "10000",
+      "date": "2024-06-05",
+      "memo": "식비"
+    },
+    {
+      "id": "9c85",
+      "type": "기타",
+      "transaction": "수입",
+      "asset": "",
+      "amount": "10000",
+      "date": "2024-06-05",
+      "memo": ""
+    },
+    {
+      "id": "e3ba",
+      "type": "월세",
+      "transaction": "지출",
+      "asset": "카드",
+      "amount": "10000",
+      "date": "2024-06-06",
+      "memo": "식비"
+    },
+    {
+      "id": "b185",
+      "type": "월세",
+      "transaction": "지출",
+      "asset": "카드",
+      "amount": "10000",
+      "date": "2024-06-06",
+      "memo": "식비"
+    },
+    {
+      "id": "12ad",
+      "type": "월세",
+      "transaction": "지출",
+      "asset": "카드",
+      "amount": "10000",
+      "date": "2024-06-06",
+      "memo": "식비"
+    },
+    {
+      "id": "975f",
+      "type": "월세",
+      "transaction": "지출",
+      "asset": "카드",
+      "amount": "10000",
+      "date": "2024-06-04",
+      "memo": "식비"
+    }
+  ]
 }
