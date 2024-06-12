@@ -1,6 +1,16 @@
 <template>
+  <div>
+    <h3>내역</h3>
+  </div>
   <div class="row">
     <div class="col">
+      <!-- 날짜 이동 버튼 -->
+      <div class="date-navigation">
+        <button @click="prevMonth">‹</button>
+        <input type="month" class="form-control" id="month" v-model="selectedMonth" />
+        <button @click="nextMonth">›</button>
+      </div>
+
       <!-- 테이블 및 기타 컨텐츠 -->
       <table class="table">
         <thead>
@@ -14,11 +24,7 @@
           </tr>
         </thead>
         <tbody>
-          <TodoItem
-            v-for="todoItem in todoList"
-            :key="todoItem.id"
-            :todoItem="todoItem"
-          />
+          <TodoItem v-for="todoItem in filteredTodoList" :key="todoItem.id" :todoItem="todoItem" />
         </tbody>
       </table>
     </div>
@@ -32,12 +38,45 @@
 </template>
 
 <script setup>
-import { inject } from 'vue';
+import { ref, inject, computed } from 'vue';
 import TodoItem from '@/components/TodoItem.vue';
+
 const todoList = inject('todoList');
+const currentDate = ref(new Date());
+const selectedMonth = ref(currentDate.value.toISOString().slice(0, 7));
+
+const filteredTodoList = computed(() => {
+  // 선택된 월에 해당하는 항목만 필터링
+  const filteredItems = todoList.value.filter((todoItem) => {
+    const itemDate = new Date(todoItem.date);
+    return itemDate.getFullYear() === new Date(selectedMonth.value).getFullYear() && itemDate.getMonth() === new Date(selectedMonth.value).getMonth();
+  });
+
+  // 필터링된 항목을 날짜를 기준으로 오름차순으로 정렬하여 반환
+  return filteredItems.slice().sort((a, b) => {
+    const dateA = new Date(a.date);
+    const dateB = new Date(b.date);
+    return dateA - dateB;
+  });
+});
+
+const prevMonth = () => {
+  const currentMonth = new Date(selectedMonth.value);
+  const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1);
+  const year = newMonth.getFullYear();
+  const month = String(newMonth.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 해줘야 합니다.
+  selectedMonth.value = `${year}-${month}`;
+};
+
+const nextMonth = () => {
+  const currentMonth = new Date(selectedMonth.value);
+  const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
+  const year = newMonth.getFullYear();
+  const month = String(newMonth.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 해줘야 합니다.
+  selectedMonth.value = `${year}-${month}`;
+};
 
 const deleteTodoItem = (id) => {
-  // 해당 ID를 가진 항목을 todoList에서 제거합니다.
   const index = todoList.value.findIndex((item) => item.id === id);
   if (index !== -1) {
     todoList.value.splice(index, 1);
@@ -47,6 +86,32 @@ const deleteTodoItem = (id) => {
 </script>
 
 <style scoped>
+.date-navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.date-navigation button {
+  padding: 10px 20px;
+  margin: 0 5px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.date-navigation button:hover {
+  background-color: #0056b3;
+}
+
+.form-control {
+  width: auto;
+  margin: 0 10px;
+}
+
 .custom-btn-container {
   position: fixed;
   bottom: 140px;
@@ -54,19 +119,19 @@ const deleteTodoItem = (id) => {
 }
 
 .custom-btn {
-  background-color: #ff6347; /* 원하는 버튼 색상 */
-  color: white; /* 텍스트 색상 */
-  width: 60px; /* 버튼의 너비 */
-  height: 60px; /* 버튼의 높이 */
-  border-radius: 50%; /* 버튼을 원형으로 만듦 */
+  background-color: #ff6347;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px; /* 텍스트 크기 */
+  font-size: 24px;
   text-decoration: none;
 }
 
 .custom-btn:hover {
-  background-color: #ff4500; /* 호버 시 버튼 색상 */
+  background-color: #ff4500;
 }
 </style>
