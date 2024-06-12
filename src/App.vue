@@ -26,10 +26,7 @@ const fetchTodoList = async () => {
   }
   states.isLoading = false;
 };
-const addTodo = async (
-  { type, transaction, asset, amount, date, memo },
-  successCallback
-) => {
+const addTodo = async ({ type, transaction, asset, amount, date, memo }, successCallback) => {
   states.isLoading = true;
   try {
     const payload = { type, transaction, asset, amount, date, memo };
@@ -45,10 +42,7 @@ const addTodo = async (
   }
   states.isLoading = false;
 };
-const updateTodo = async (
-  { id, transaction, type, asset, amount, date, memo },
-  successCallback
-) => {
+const updateTodo = async ({ id, transaction, type, asset, amount, date, memo }, successCallback) => {
   states.isLoading = true;
   try {
     const payload = { id, transaction, type, asset, amount, date, memo };
