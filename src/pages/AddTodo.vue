@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="col p-3">
-            <h2>할일 추가</h2>
+            <h2>가계부</h2>
         </div>
     </div>
     <div class="row">
@@ -49,6 +49,7 @@
                     class="form-control"
                     id="amount"
                     v-model="todoItem.amount"
+                    @keypress="allowOnlyNumbers"
                 />
             </div>
             <div class="form-group">
@@ -102,11 +103,11 @@
     </div>
 </template>
 <script setup>
-import { inject, reactive } from 'vue';
+import { inject, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 const { addTodo } = inject('actions');
-const todoItem = reactive({
+const todoItem = ref({
     date: '',
     memo: '',
     asset: '',
@@ -117,16 +118,26 @@ const todoItem = reactive({
 const types = ['월세', '기타', '교통'];
 const assets = ['카드', '현금', '이체'];
 const addTodoHandler = () => {
-    let { date } = todoItem;
-    if (!date || date.trim() === '') {
-        alert('값을 반드시 입력해야 합니다');
+    const { date, memo, asset, transaction, amount, type } = todoItem.value;
+    if (!date || !memo || !asset || !transaction || !amount || !type) {
+        alert('모든 필드를 입력해주세요.');
         return;
     }
-    addTodo({ ...todoItem }, () => {
+    addTodo({ ...todoItem.value }, () => {
         router.push('/todos');
     });
 };
-const selectAsset = (asset) => {
-    todoItem.asset = asset;
+onMounted(() => {
+    const dateParam = router.currentRoute.value.query.date;
+    if (dateParam) {
+        todoItem.value.date = dateParam;
+    }
+});
+// 숫자 이외의 키 입력시 막음
+const allowOnlyNumbers = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        event.preventDefault();
+    }
 };
 </script>
