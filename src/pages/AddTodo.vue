@@ -130,7 +130,7 @@ const types = ['입금', '출금'];
 const assets = ['카드', '현금'];
 const addTodoHandler = () => {
   const { date, memo, asset, transaction, amount, type } = todoItem.value;
-  if (!date || !memo || !transaction || !amount || !type) {
+  if (!date || !memo || !asset || !transaction || !amount || !type) {
     alert('모든 필드를 입력해주세요.');
     return;
   }
