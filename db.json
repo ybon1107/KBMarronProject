@@ -17,6 +17,33 @@
       "amount": 50,
       "date": "2024-06-03",
       "memo": "지하철"
+    },
+    {
+      "id": "8760",
+      "type": "교통",
+      "transaction": "지출",
+      "asset": "현금",
+      "amount": "12345664",
+      "date": "2024-06-04",
+      "memo": "fd"
+    },
+    {
+      "id": "7782",
+      "type": "식비",
+      "transaction": "지출",
+      "asset": "카드",
+      "amount": "10000000000",
+      "date": "2024-07-08",
+      "memo": "th"
+    },
+    {
+      "id": "a5bf",
+      "type": "교통",
+      "transaction": "이체",
+      "asset": "카드",
+      "amount": "133333",
+      "date": "2024-06-01",
+      "memo": "4f"
     }
   ]
 }
