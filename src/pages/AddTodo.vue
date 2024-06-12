@@ -49,7 +49,7 @@
                     class="form-control"
                     id="amount"
                     v-model="todoItem.amount"
-                    @input="filterNonNumeric"
+                    @keypress="allowOnlyNumbers"
                 />
             </div>
             <div class="form-group">
@@ -105,6 +105,7 @@
 <script setup>
 import { inject, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+
 const router = useRouter();
 const { addTodo } = inject('actions');
 const todoItem = ref({
@@ -115,8 +116,9 @@ const todoItem = ref({
     amount: '',
     type: '',
 });
-const types = ['월세', '기타', '교통'];
+const types = ['월세', '교통', '식비', '기타'];
 const assets = ['카드', '현금', '이체'];
+
 const addTodoHandler = () => {
     const { date, memo, asset, transaction, amount, type } = todoItem.value;
     if (!date || !memo || !asset || !transaction || !amount || !type) {
@@ -134,8 +136,10 @@ onMounted(() => {
     }
 });
 // 숫자 이외의 키 입력시 막음
-const filterNonNumeric = (event) => {
-    const value = event.target.value;
-    todoItem.value.amount = value.replace(/[^0-9]/g, '');
+const allowOnlyNumbers = (event) => {
+    const charCode = event.which ? event.which : event.keyCode;
+    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        event.preventDefault();
+    }
 };
 </script>

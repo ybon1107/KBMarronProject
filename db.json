@@ -1,76 +1,49 @@
 {
-  "todos": [
-    {
-      "id": "2",
-      "transaction": "이체",
-      "type": "월세",
-      "asset": "계좌이체",
-      "amount": 1200,
-      "date": "2024-06-01",
-      "memo": "미진빌라"
-    },
-    {
-      "id": "3",
-      "transaction": "이체",
-      "type": "기타",
-      "asset": "현금",
-      "amount": 200,
-      "date": "2024-06-02",
-      "memo": "노래방감"
-    },
-    {
-      "id": "4",
-      "transaction": "출금",
-      "type": "교통",
-      "asset": "카드",
-      "amount": 50,
-      "date": "2024-06-03",
-      "memo": "지하철"
-    },
-    {
-      "id": "3e7d",
-      "type": "기타",
-      "transaction": "지출",
-      "asset": "카드",
-      "amount": "12312312",
-      "date": "2024-06-05",
-      "memo": "142412"
-    },
-    {
-      "id": "efec",
-      "type": "월세",
-      "transaction": "지출",
-      "asset": "카드",
-      "amount": -123,
-      "date": "2024-06-04",
-      "memo": "124"
-    },
-    {
-      "id": "5ad2",
-      "type": "월세",
-      "transaction": "이체",
-      "asset": "현금",
-      "amount": -123,
-      "date": "2024-06-04",
-      "memo": "14"
-    },
-    {
-      "id": "2f2d",
-      "type": "월세",
-      "transaction": "이체",
-      "asset": "현금",
-      "amount": -123,
-      "date": "2024-06-04",
-      "memo": "124"
-    },
-    {
-      "id": "89df",
-      "type": "기타",
-      "transaction": "이체",
-      "asset": "카드",
-      "amount": "234",
-      "date": "2024-06-11",
-      "memo": "324"
-    }
-  ]
-}
+    "todos": [
+      {
+        "id": "3",
+        "transaction": "이체",
+        "type": "기타",
+        "asset": "현금",
+        "amount": 200,
+        "date": "2024-06-02",
+        "memo": "노래방감"
+      },
+      {
+        "id": "4",
+        "transaction": "출금",
+        "type": "교통",
+        "asset": "카드",
+        "amount": 50,
+        "date": "2024-06-03",
+        "memo": "지하철"
+      },
+      {
+        "id": "8760",
+        "type": "교통",
+        "transaction": "지출",
+        "asset": "현금",
+        "amount": "12345664",
+        "date": "2024-06-04",
+        "memo": "fd"
+      },
+      {
+        "id": "7782",
+        "type": "식비",
+        "transaction": "지출",
+        "asset": "카드",
+        "amount": "10000000000",
+        "date": "2024-07-08",
+        "memo": "th"
+      },
+      {
+        "id": "a5bf",
+        "type": "교통",
+        "transaction": "이체",
+        "asset": "카드",
+        "amount": "133333",
+        "date": "2024-06-01",
+        "memo": "4f"
+      }
+    ]
+  }
