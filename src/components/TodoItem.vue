@@ -18,7 +18,7 @@
       }"
     >
       <!-- 수입이면 +를, 지출이나 이체이면 -를 앞에 붙입니다 -->
-      {{ (todoItem.transaction === '수입' ? '+' : '-') + Math.abs(todoItem.amount) }}
+      {{ (todoItem.transaction === '수입' ? '+' : '-') + Math.abs(todoItem.amount) }} 원
     </td>
     <td>{{ todoItem.memo }}</td>
     <td>
