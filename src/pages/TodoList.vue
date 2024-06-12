@@ -1,16 +1,20 @@
 <template>
   <div>
-    <h3>내역</h3>
+    <!-- 상단에 총 지출, 총 수입, 총 사용금액 표시 -->
+    <div class="row mt-3">
+      <div class="col">
+        <h3>총 지출: {{ totalExpense }} 원</h3>
+      </div>
+      <div class="col">
+        <h3>총 수입: {{ totalIncome }} 원</h3>
+      </div>
+      <div class="col">
+        <h3>총 사용금액: {{ totalExpenseIncomeDiff }} 원</h3>
+      </div>
+    </div>
   </div>
   <div class="row">
     <div class="col">
-      <!-- 날짜 이동 버튼 -->
-      <div class="date-navigation">
-        <button @click="prevMonth">‹</button>
-        <input type="month" class="form-control" id="month" v-model="selectedMonth" />
-        <button @click="nextMonth">›</button>
-      </div>
-
       <!-- 테이블 및 기타 컨텐츠 -->
       <table class="table">
         <thead>
@@ -24,7 +28,7 @@
           </tr>
         </thead>
         <tbody>
-          <TodoItem v-for="todoItem in filteredTodoList" :key="todoItem.id" :todoItem="todoItem" />
+          <TodoItem v-for="todoItem in todoList" :key="todoItem.id" :todoItem="todoItem" />
         </tbody>
       </table>
     </div>
@@ -38,51 +42,49 @@
 </template>
 
 <script setup>
-import { ref, inject, computed } from 'vue';
+import { inject, computed } from 'vue';
 import TodoItem from '@/components/TodoItem.vue';
-
+import { useRouter } from 'vue-router';
 const todoList = inject('todoList');
-const currentDate = ref(new Date());
-const selectedMonth = ref(currentDate.value.toISOString().slice(0, 7));
-
-const filteredTodoList = computed(() => {
-  // 선택된 월에 해당하는 항목만 필터링
-  const filteredItems = todoList.value.filter((todoItem) => {
-    const itemDate = new Date(todoItem.date);
-    return itemDate.getFullYear() === new Date(selectedMonth.value).getFullYear() && itemDate.getMonth() === new Date(selectedMonth.value).getMonth();
+// 총 지출을 계산하는 함수
+const totalExpense = computed(() => {
+  let total = 0;
+  todoList.value.forEach((todo) => {
+    if (todo.transaction === '지출' || todo.transaction === '이체') {
+      total += parseInt(todo.amount);
+    }
   });
-
-  // 필터링된 항목을 날짜를 기준으로 오름차순으로 정렬하여 반환
-  return filteredItems.slice().sort((a, b) => {
-    const dateA = new Date(a.date);
-    const dateB = new Date(b.date);
-    return dateA - dateB;
-  });
+  return total;
 });
 
-const prevMonth = () => {
-  const currentMonth = new Date(selectedMonth.value);
-  const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1);
-  const year = newMonth.getFullYear();
-  const month = String(newMonth.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 해줘야 합니다.
-  selectedMonth.value = `${year}-${month}`;
-};
+// 총 수입을 계산하는 함수
+const totalIncome = computed(() => {
+  let total = 0;
+  todoList.value.forEach((todo) => {
+    if (todo.transaction === '수입') {
+      total += parseInt(todo.amount);
+    }
+  });
+  return total;
+});
 
-const nextMonth = () => {
-  const currentMonth = new Date(selectedMonth.value);
-  const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
-  const year = newMonth.getFullYear();
-  const month = String(newMonth.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 해줘야 합니다.
-  selectedMonth.value = `${year}-${month}`;
-};
+// 총 사용금액을 계산하는 함수
+const totalExpenseIncomeDiff = computed(() => {
+  return totalIncome.value - totalExpense.value;
+});
 
+// 삭제 함수
 const deleteTodoItem = (id) => {
-  const index = todoList.value.findIndex((item) => item.id === id);
-  if (index !== -1) {
-    todoList.value.splice(index, 1);
-    console.log(`할일 항목 ${id}를 삭제했습니다.`);
-  }
+  deleteTodo(id);
 };
+
+// 완료 토글 함수
+const toggleTodoDone = (id) => {
+  toggleDone(id);
+};
+
+// 라우터
+const router = useRouter();
 </script>
 
 <style scoped>
@@ -119,19 +121,19 @@ const deleteTodoItem = (id) => {
 }
 
 .custom-btn {
-  background-color: #ff6347;
-  color: white;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+  background-color: #ff6347; /* 원하는 버튼 색상 */
+  color: white; /* 텍스트 색상 */
+  width: 60px; /* 버튼의 너비 */
+  height: 60px; /* 버튼의 높이 */
+  border-radius: 50%; /* 버튼을 원형으로 만듦 */
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 24px;
+  font-size: 24px; /* 텍스트 크기 */
   text-decoration: none;
 }
 
 .custom-btn:hover {
-  background-color: #ff4500;
+  background-color: #ff4500; /* 호버 시 버튼 색상 */
 }
 </style>
