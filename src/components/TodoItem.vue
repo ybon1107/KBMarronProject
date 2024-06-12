@@ -2,16 +2,17 @@
   <tr>
     <td>{{ todoItem.date }}</td>
     <td>{{ todoItem.asset }}</td>
+    <td>{{ todoItem.transaction }}</td>
     <td>{{ todoItem.type }}</td>
     <td>{{ todoItem.amount }}</td>
     <td>{{ todoItem.memo }}</td>
     <td>
-      <span
+      <!-- <span
         class="float-end badge bg-secondary pointer m-1"
         @click="router.push(`/todos/edit/${todoItem.id}`)"
       >
         편집</span
-      >
+      > -->
       <span
         class="float-end badge bg-secondary pointer m-1"
         @click="deleteTodo(todoItem.id)"
