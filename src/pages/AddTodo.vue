@@ -7,7 +7,7 @@
   <div class="row">
     <div class="col">
       <div class="form-group">
-        <label htmlfor="transaction">자산:</label><br />
+        <label htmlfor="transaction">거래 유형:</label><br />
         <label>
           <input type="radio" v-model="todoItem.transaction" value="수입" />
           수입
@@ -53,7 +53,7 @@
       </div>
       <div class="form-group">
         <button type="button" class="btn btn-primary m-1" @click="addTodoHandler">저 장</button>
-        <button type="button" class="btn btn-primary m-1" @click="router.push('/')">취 소</button>
+        <button type="button" class="btn btn-primary m-1" @click="router.push('/todos')">취 소</button>
       </div>
     </div>
   </div>
