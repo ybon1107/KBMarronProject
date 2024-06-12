@@ -10,15 +10,6 @@
       "memo": "노래방감"
     },
     {
-      "id": "4",
-      "transaction": "출금",
-      "type": "교통",
-      "asset": "카드",
-      "amount": 50,
-      "date": "2024-06-03",
-      "memo": "지하철"
-    },
-    {
       "id": "8760",
       "type": "교통",
       "transaction": "지출",
@@ -44,6 +35,24 @@
       "amount": "133333",
       "date": "2024-06-01",
       "memo": "4f"
+    },
+    {
+      "id": "62a9",
+      "type": "교통",
+      "transaction": "수입",
+      "asset": "현금",
+      "amount": "+0455",
+      "date": "2024-06-15",
+      "memo": "23"
+    },
+    {
+      "id": "11d1",
+      "type": "월세",
+      "transaction": "수입",
+      "asset": "카드",
+      "amount": "+0455",
+      "date": "2024-06-12",
+      "memo": "23"
     }
   ]
 }
