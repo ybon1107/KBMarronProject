@@ -1,31 +1,31 @@
 {
   "todos": [
     {
-      "id": "de87",
+      "id": "0b46",
       "type": "식비",
       "transaction": "수입",
       "asset": "현금",
-      "amount": "324324432",
-      "date": "2024-06-05",
-      "memo": "234"
+      "amount": "011123",
+      "date": "2024-05-13",
+      "memo": "123123124124"
     },
     {
-      "id": "a736",
-      "type": "월세",
+      "id": "c914",
+      "type": "교통",
       "transaction": "지출",
-      "asset": "카드",
-      "amount": "22223123",
-      "date": "2024-06-10",
-      "memo": "123"
+      "asset": "현금",
+      "amount": "01111111111111",
+      "date": "2024-06-21",
+      "memo": "134134"
     },
     {
-      "id": "eacc",
+      "id": "fcdb",
       "type": "교통",
       "transaction": "수입",
-      "asset": "카드",
-      "amount": "21312",
-      "date": "2024-06-12",
-      "memo": "er"
+      "asset": "현금",
+      "amount": "034343434",
+      "date": "2024-06-06",
+      "memo": "234"
     }
   ]
 }
