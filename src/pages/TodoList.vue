@@ -1,14 +1,31 @@
 <template>
   <div class="row">
     <div class="col">
-      <!-- 날짜 이동 버튼 -->
-      <div class="date-navigation">
-        <button @click="prevMonth">‹</button>
-        <input type="month" class="form-control" id="month" v-model="selectedMonth" />
-        <button @click="nextMonth">›</button>
+      <!-- 날짜 이동 버튼 및 추가/삭제 버튼을 포함한 컨테이너 -->
+      <div class="header-container">
+        <!-- 날짜 이동 버튼 -->
+        <div class="date-navigation">
+          <button @click="prevMonth">‹</button>
+          <input
+            type="month"
+            class="form-control"
+            id="month"
+            v-model="selectedMonth"
+          />
+          <button @click="nextMonth">›</button>
+        </div>
+        <!-- 플러스 버튼 및 삭제 버튼 -->
+        <div class="button-container">
+          <router-link class="custom-btn" to="/todos/add">
+            <i class="fas fa-plus"></i>
+          </router-link>
+          <div class="margin"></div>
+          <button @click="deleteSelectedTodos" class="custom-btn delete-btn">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
       </div>
       <!-- 테이블 및 기타 컨텐츠 -->
-      <button @click="deleteSelectedTodos" class="btn btn-danger mb-2">선택 행 삭제</button>
       <table class="table">
         <thead>
           <tr>
@@ -21,7 +38,13 @@
             </th>
           </tr>
           <tr>
-            <th><input type="checkbox" v-model="selectAll" @change="toggleSelectAll" /></th>
+            <th>
+              <input
+                type="checkbox"
+                v-model="selectAll"
+                @change="toggleSelectAll"
+              />
+            </th>
             <th>날짜</th>
             <th>자산</th>
             <th>거래 유형</th>
@@ -41,12 +64,6 @@
         </tbody>
       </table>
     </div>
-  </div>
-  <!-- "할일 추가" 버튼을 오른쪽 하단에 고정 -->
-  <div class="custom-btn-container">
-    <router-link class="custom-btn" to="/todos/add">
-      <i class="fas fa-plus"></i>
-    </router-link>
   </div>
 </template>
 
@@ -70,7 +87,10 @@ const formatAmount = (amount) => {
 };
 const filteredTotalExpense = computed(() => {
   return filteredTodoList.value.reduce((total, todo) => {
-    if (todo.transaction === '지출' || (todo.transaction === '이체' && todo.type === '출금')) {
+    if (
+      todo.transaction === '지출' ||
+      (todo.transaction === '이체' && todo.type === '출금')
+    ) {
       total += parseInt(todo.amount);
     }
     return total;
@@ -79,7 +99,10 @@ const filteredTotalExpense = computed(() => {
 
 const filteredTotalIncome = computed(() => {
   return filteredTodoList.value.reduce((total, todo) => {
-    if (todo.transaction === '수입' || (todo.transaction === '이체' && todo.type === '입금')) {
+    if (
+      todo.transaction === '수입' ||
+      (todo.transaction === '이체' && todo.type === '입금')
+    ) {
       total += parseInt(todo.amount);
     }
     return total;
@@ -94,7 +117,10 @@ const filteredTodoList = computed(() => {
   // 선택된 월에 해당하는 항목만 필터링
   const filteredItems = todoList.value.filter((todoItem) => {
     const itemDate = new Date(todoItem.date);
-    return itemDate.getFullYear() === new Date(selectedMonth.value).getFullYear() && itemDate.getMonth() === new Date(selectedMonth.value).getMonth();
+    return (
+      itemDate.getFullYear() === new Date(selectedMonth.value).getFullYear() &&
+      itemDate.getMonth() === new Date(selectedMonth.value).getMonth()
+    );
   });
 
   // 필터링된 항목을 날짜를 기준으로 오름차순으로 정렬하여 반환
@@ -123,14 +149,14 @@ const toggleSelectItem = (id) => {
 };
 const deleteSelectedTodos = async () => {
   try {
-    const deletePromises = selectedIds.value.map((id) => axios.delete(BASEURI + `/${id}`));
+    const deletePromises = selectedIds.value.map((id) =>
+      axios.delete(BASEURI + `/${id}`)
+    );
     const responses = await Promise.all(deletePromises);
     responses.forEach((response, index) => {
       if (response.status === 200) {
         const id = selectedIds.value[index];
         const todoIndex = states.todoList.findIndex((todo) => todo.id === id);
-        console.log(states.todoList);
-        console.log(todoIndex);
         states.todoList.splice(todoIndex, 1);
       } else {
         alert('Todo 삭제 실패');
@@ -139,7 +165,6 @@ const deleteSelectedTodos = async () => {
     selectedIds.value = [];
     selectAll.value = false;
     router.push('/todos');
-    console.log('router');
   } catch (error) {
     alert('에러발생 :' + error);
   }
@@ -147,7 +172,10 @@ const deleteSelectedTodos = async () => {
 
 const prevMonth = () => {
   const currentMonth = new Date(selectedMonth.value);
-  const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1);
+  const newMonth = new Date(
+    currentMonth.getFullYear(),
+    currentMonth.getMonth() - 1
+  );
   const year = newMonth.getFullYear();
   const month = String(newMonth.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 해줘야 합니다.
   selectedMonth.value = `${year}-${month}`;
@@ -155,7 +183,10 @@ const prevMonth = () => {
 
 const nextMonth = () => {
   const currentMonth = new Date(selectedMonth.value);
-  const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
+  const newMonth = new Date(
+    currentMonth.getFullYear(),
+    currentMonth.getMonth() + 1
+  );
   const year = newMonth.getFullYear();
   const month = String(newMonth.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 해줘야 합니다.
   selectedMonth.value = `${year}-${month}`;
@@ -163,11 +194,16 @@ const nextMonth = () => {
 </script>
 
 <style scoped>
-.date-navigation {
+.header-container {
   display: flex;
-  justify-content: center;
+  justify-content: space-between; /* 날짜 이동 버튼과 추가/삭제 버튼 사이를 떨어뜨립니다 */
   align-items: center;
   margin-bottom: 20px;
+}
+
+.date-navigation {
+  display: flex;
+  align-items: center;
 }
 
 .date-navigation button {
@@ -189,14 +225,17 @@ const nextMonth = () => {
   margin: 0 10px;
 }
 
-.custom-btn-container {
-  position: fixed;
-  bottom: 140px;
-  right: 100px;
+.button-container {
+  display: flex;
+  align-items: center;
+}
+
+.margin {
+  width: 10px; /* 버튼 사이의 여백을 조정합니다 */
 }
 
 .custom-btn {
-  background-color: #ff6347;
+  background-color: #28a745;
   color: white;
   width: 60px;
   height: 60px;
@@ -209,6 +248,24 @@ const nextMonth = () => {
 }
 
 .custom-btn:hover {
-  background-color: #ff4500;
+  background-color: #218838;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  border: none; /* border 제거 */
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.custom-btn i {
+  font-size: 24px;
+}
+
+.delete-btn i {
+  font-size: 24px;
+  color: white;
 }
 </style>
