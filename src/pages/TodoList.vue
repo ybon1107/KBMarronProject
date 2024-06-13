@@ -6,12 +6,7 @@
         <!-- 날짜 이동 버튼 -->
         <div class="date-navigation">
           <button @click="prevMonth">‹</button>
-          <input
-            type="month"
-            class="form-control"
-            id="month"
-            v-model="selectedMonth"
-          />
+          <input type="month" class="form-control" id="month" v-model="selectedMonth" />
           <button @click="nextMonth">›</button>
         </div>
         <!-- 플러스 버튼 및 삭제 버튼 -->
@@ -33,17 +28,13 @@
               <div style="display: flex; justify-content: space-between">
                 <span>수입: {{ formatAmount(filteredTotalIncome) }} 원</span>
                 <span>지출: {{ formatAmount(filteredTotalExpense) }} 원</span>
-                <span>전체: {{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원</span>
+                <span>전체: {{ filteredTotalExpenseIncomeDiff < 0 ? '-' : '' }}{{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원</span>
               </div>
             </th>
           </tr>
           <tr>
             <th>
-              <input
-                type="checkbox"
-                v-model="selectAll"
-                @change="toggleSelectAll"
-              />
+              <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" />
             </th>
             <th>날짜</th>
             <th>자산</th>
@@ -87,10 +78,7 @@ const formatAmount = (amount) => {
 };
 const filteredTotalExpense = computed(() => {
   return filteredTodoList.value.reduce((total, todo) => {
-    if (
-      todo.transaction === '지출' ||
-      (todo.transaction === '이체' && todo.type === '출금')
-    ) {
+    if (todo.transaction === '지출' || (todo.transaction === '이체' && todo.type === '출금')) {
       total += parseInt(todo.amount);
     }
     return total;
@@ -99,10 +87,7 @@ const filteredTotalExpense = computed(() => {
 
 const filteredTotalIncome = computed(() => {
   return filteredTodoList.value.reduce((total, todo) => {
-    if (
-      todo.transaction === '수입' ||
-      (todo.transaction === '이체' && todo.type === '입금')
-    ) {
+    if (todo.transaction === '수입' || (todo.transaction === '이체' && todo.type === '입금')) {
       total += parseInt(todo.amount);
     }
     return total;
@@ -117,10 +102,7 @@ const filteredTodoList = computed(() => {
   // 선택된 월에 해당하는 항목만 필터링
   const filteredItems = todoList.value.filter((todoItem) => {
     const itemDate = new Date(todoItem.date);
-    return (
-      itemDate.getFullYear() === new Date(selectedMonth.value).getFullYear() &&
-      itemDate.getMonth() === new Date(selectedMonth.value).getMonth()
-    );
+    return itemDate.getFullYear() === new Date(selectedMonth.value).getFullYear() && itemDate.getMonth() === new Date(selectedMonth.value).getMonth();
   });
 
   // 필터링된 항목을 날짜를 기준으로 오름차순으로 정렬하여 반환
@@ -149,9 +131,7 @@ const toggleSelectItem = (id) => {
 };
 const deleteSelectedTodos = async () => {
   try {
-    const deletePromises = selectedIds.value.map((id) =>
-      axios.delete(BASEURI + `/${id}`)
-    );
+    const deletePromises = selectedIds.value.map((id) => axios.delete(BASEURI + `/${id}`));
     const responses = await Promise.all(deletePromises);
     responses.forEach((response, index) => {
       if (response.status === 200) {
@@ -172,10 +152,7 @@ const deleteSelectedTodos = async () => {
 
 const prevMonth = () => {
   const currentMonth = new Date(selectedMonth.value);
-  const newMonth = new Date(
-    currentMonth.getFullYear(),
-    currentMonth.getMonth() - 1
-  );
+  const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1);
   const year = newMonth.getFullYear();
   const month = String(newMonth.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 해줘야 합니다.
   selectedMonth.value = `${year}-${month}`;
@@ -183,10 +160,7 @@ const prevMonth = () => {
 
 const nextMonth = () => {
   const currentMonth = new Date(selectedMonth.value);
-  const newMonth = new Date(
-    currentMonth.getFullYear(),
-    currentMonth.getMonth() + 1
-  );
+  const newMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1);
   const year = newMonth.getFullYear();
   const month = String(newMonth.getMonth() + 1).padStart(2, '0'); // 월은 0부터 시작하므로 +1 해줘야 합니다.
   selectedMonth.value = `${year}-${month}`;

@@ -6,20 +6,17 @@
       <a href="#" @click.prevent="onClickNext">▶</a>
     </h2>
 
-    <div class="row mt-3">
-      <div class="col">
-        <h3 style="color: blue">수입: {{ formatAmount(filteredTotalIncome) }} 원</h3>
-      </div>
-      <div class="col">
-        <h3 style="color: red">지출: {{ formatAmount(filteredTotalExpense) }} 원</h3>
-      </div>
-      <div class="col">
-        <h3>전체: {{ filteredTotalExpenseIncomeDiff < 0 ? '-' : '' }}{{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원</h3>
-      </div>
-    </div>
-
     <table class="table table-hover">
       <thead>
+        <tr>
+          <th colspan="6" style="padding: 10px">
+            <div style="display: flex; justify-content: space-between">
+              <span>수입: {{ formatAmount(filteredTotalIncome) }} 원</span>
+              <span>지출: {{ formatAmount(filteredTotalExpense) }} 원</span>
+              <span>전체: {{ filteredTotalExpenseIncomeDiff < 0 ? '-' : '' }}{{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원</span>
+            </div>
+          </th>
+        </tr>
         <tr>
           <!-- 주의 이름을 표시하는 부분 -->
           <td v-for="(weekName, index) in weekNames" :key="index" :class="{ red: index === 0, blue: index === 6 }" style="height: 25px">
