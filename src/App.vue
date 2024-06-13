@@ -78,22 +78,6 @@ const deleteTodo = async (id) => {
   }
   states.isLoading = false;
 };
-const toggleDone = async (id) => {
-  states.isLoading = true;
-  try {
-    let todo = states.todoList.find((todo) => todo.id === id);
-    let payload = { ...todo, done: !todo.done };
-    const response = await axios.put(BASEURI + `/${id}`, payload);
-    if (response.status === 200) {
-      todo.done = payload.done;
-    } else {
-      alert('Todo 완료 변경 실패');
-    }
-  } catch (error) {
-    alert('에러발생 :' + error);
-  }
-  states.isLoading = false;
-};
 
 provide(
   'todoList',

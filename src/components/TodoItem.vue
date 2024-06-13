@@ -1,5 +1,6 @@
 <template>
   <tr>
+    <td><input type="checkbox" :checked="selected" @change="$emit('select')" /></td>
     <td>{{ todoItem.date }}</td>
     <td>{{ todoItem.asset }}</td>
     <td
@@ -35,10 +36,10 @@ import { defineProps } from 'vue';
 
 defineProps({
   todoItem: { Type: Object, required: true },
+  selected: Boolean,
 });
 
 const router = useRouter();
-const { deleteTodo, toggleDone } = inject('actions');
 
 // 금액을 1000 단위로 구분하는 함수
 const formatAmount = (amount) => {
