@@ -1,6 +1,6 @@
 <template>
   <div class="calendar">
-    <h2>
+    <h2 class="text-center">
       <a href="#" @click.prevent="onClickPrev">◀</a>
       {{ currentYear }}년 {{ currentMonth }}월
       <a href="#" @click.prevent="onClickNext">▶</a>
@@ -25,6 +25,7 @@
         </tr>
       </thead>
       <tbody>
+        <!-- 각 주에 해당하는 날짜를 표시하는 부분 -->
         <tr v-for="(row, rowIndex) in currentCalendarMatrix" :key="rowIndex">
           <td v-for="(day, colIndex) in row" :key="colIndex" style="padding: 20px" @click="day !== '' && onDateClick(day)" :class="{ red: colIndex === 0, blue: colIndex === 6 }">
             <span v-if="day !== '' && isToday(currentYear, currentMonth, day)" class="rounded">
@@ -92,6 +93,7 @@ async function fetchTodoList() {
 }
 
 function calculateTotals() {
+  // 현재 달의 지출 총액 계산
   filteredTotalExpense.value = todoList.value.reduce((total, todo) => {
     if (todo.transaction === '지출' || (todo.transaction === '이체' && todo.type === '출금')) {
       total += parseInt(todo.amount);
@@ -99,6 +101,7 @@ function calculateTotals() {
     return total;
   }, 0);
 
+  // 현재 달의 수입 총액 계산
   filteredTotalIncome.value = todoList.value.reduce((total, todo) => {
     if (todo.transaction === '수입' || (todo.transaction === '이체' && todo.type === '입금')) {
       total += parseInt(todo.amount);
@@ -106,6 +109,7 @@ function calculateTotals() {
     return total;
   }, 0);
 
+  // 현재 달의 지출 수입 차액 계산
   filteredTotalExpenseIncomeDiff.value = filteredTotalIncome.value - filteredTotalExpense.value;
 }
 
@@ -251,6 +255,9 @@ const formatAmount = (amount) => {
 </script>
 
 <style scoped>
+.text-center {
+  text-align: center;
+}
 /* 일요일의 글자 색을 빨간색으로 설정 */
 .red {
   color: red;
