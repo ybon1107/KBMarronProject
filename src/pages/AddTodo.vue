@@ -136,6 +136,16 @@ const selectedTab = ref(todoItem.value.transaction);
 const selectTab = (tab) => {
   selectedTab.value = tab;
   todoItem.value.transaction = tab;
+  resetTodoItem(tab);
+};
+
+const resetTodoItem = (tab) => {
+  todoItem.value.date = '';
+  todoItem.value.memo = '';
+  todoItem.value.asset = tab === '지출' ? '' : '-';
+  todoItem.value.amount = 0;
+  todoItem.value.type = '';
+  formattedAmount.value = formatAmount(todoItem.value.amount);
 };
 const router = useRouter();
 const { addTodo } = inject('actions');
