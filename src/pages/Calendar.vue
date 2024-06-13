@@ -37,12 +37,13 @@
             <span v-else>
               {{ day }}
             </span>
-            <div v-if="day !== '' && getTodoForDate(day).length > 0">
-              <div v-for="item in getTodoForDate(day)" :key="item.id">
+            <div v-if="day !== '' && getTodoForDate(day).length > 0" class="todo-list">
+              <div v-for="item in getTodoForDate(day)" :key="item.id" class="todo-item">
                 <span
                   :style="{
                     color: item.transaction === '수입' || (item.transaction === '이체' && item.type === '입금') ? 'blue' : 'red',
                   }"
+                  class="amount"
                 >
                   {{ item.amount }}
                 </span>
@@ -263,10 +264,26 @@ const filteredTotalExpenseIncomeDiff = ref(0);
 thead {
   text-align: center;
 }
-
 .table td {
   width: 150px; /* 각 날짜 칸의 너비를 조절하세요 */
   height: 100px; /* 각 날짜 칸의 높이를 조절하세요 */
+  position: relative; /* 상대 위치 지정 */
+}
+
+/* 할 일 목록 정렬 */
+.todo-list {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  text-align: right; /* 오른쪽 정렬 */
+}
+
+.todo-item {
+  margin-bottom: 5px; /* 할 일 사이의 간격 조정 */
+}
+
+.amount {
+  color: inherit; /* 기본 색상 상속 */
 }
 .table td:hover {
   background-color: #ffcc80; /* 연한 주황색 */

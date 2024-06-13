@@ -23,9 +23,6 @@
       <!-- 변경된 부분: formatAmount 함수를 사용하여 금액을 1000 단위로 구분합니다 -->
     </td>
     <td>{{ todoItem.memo }}</td>
-    <td>
-      <span class="float-end badge bg-secondary pointer m-1" @click="deleteTodo(todoItem.id)">삭제</span>
-    </td>
   </tr>
 </template>
 
