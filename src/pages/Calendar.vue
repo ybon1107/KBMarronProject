@@ -207,7 +207,7 @@ function isToday(year, month, day) {
 
 function onDateClick(day) {
   if (day !== '') {
-    const selectedDate = new Date(currentYear.value, currentMonth.value - 1, day);
+    const selectedDate = new Date(currentYear.value, currentMonth.value - 1, day + 1);
     router.push({
       path: '/todos/add',
       query: { date: selectedDate.toISOString().split('T')[0] },

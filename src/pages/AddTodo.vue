@@ -140,7 +140,6 @@ const selectTab = (tab) => {
 };
 
 const resetTodoItem = (tab) => {
-  todoItem.value.date = '';
   todoItem.value.memo = '';
   todoItem.value.asset = tab === '지출' ? '' : '-';
   todoItem.value.amount = 0;
