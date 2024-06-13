@@ -7,21 +7,49 @@
   <div class="row">
     <div class="col">
       <div class="tab-buttons">
-        <button :class="{ active: selectedTab === '수입' }" @click="selectTab('수입')">수입</button>
-        <button :class="{ active: selectedTab === '지출' }" @click="selectTab('지출')">지출</button>
-        <button :class="{ active: selectedTab === '이체' }" @click="selectTab('이체')">이체</button>
+        <button
+          :class="{ active: selectedTab === '수입' }"
+          @click="selectTab('수입')"
+        >
+          수입
+        </button>
+        <button
+          :class="{ active: selectedTab === '지출' }"
+          @click="selectTab('지출')"
+        >
+          지출
+        </button>
+        <button
+          :class="{ active: selectedTab === '이체' }"
+          @click="selectTab('이체')"
+        >
+          이체
+        </button>
       </div>
       <div v-if="selectedTab === '수입'">
         <div class="form-group">
           <label htmlfor="date">날짜:</label>
-          <input type="date" class="form-control" id="date" v-model="todoItem.date" />
+          <input
+            type="date"
+            class="form-control"
+            id="date"
+            v-model="todoItem.date"
+          />
         </div>
         <div class="form-group position-relative">
           <label htmlFor="amount">금액 :</label>
           <div class="input-group">
-            <input type="text" class="form-control" id="amount" v-model="formattedAmount" @input="updateAmount" />
+            <input
+              type="text"
+              class="form-control"
+              id="amount"
+              v-model="formattedAmount"
+              @input="updateAmount"
+            />
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" disabled>원</button>
+              <button class="btn btn-outline-secondary" type="button" disabled>
+                원
+              </button>
             </div>
           </div>
         </div>
@@ -36,24 +64,54 @@
         </div>
         <div class="form-group">
           <label htmlFor="memo">내용 :</label>
-          <input type="text" class="form-control" id="memo" v-model="todoItem.memo" />
+          <input
+            type="text"
+            class="form-control"
+            id="memo"
+            v-model="todoItem.memo"
+          />
         </div>
         <div class="form-group">
-          <button type="button" class="btn btn-primary m-1" @click="addTodoHandler">저 장</button>
-          <button type="button" class="btn btn-primary m-1" @click="router.push('/todos')">취 소</button>
+          <button
+            type="button"
+            class="btn btn-primary m-1"
+            @click="addTodoHandler"
+          >
+            저 장
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary m-1"
+            @click="router.push('/todos')"
+          >
+            취 소
+          </button>
         </div>
       </div>
       <div v-if="selectedTab === '지출'">
         <div class="form-group">
           <label htmlfor="date">날짜:</label>
-          <input type="date" class="form-control" id="date" v-model="todoItem.date" />
+          <input
+            type="date"
+            class="form-control"
+            id="date"
+            v-model="todoItem.date"
+          />
         </div>
         <div class="form-group position-relative">
           <label htmlFor="amount">금액 :</label>
           <div class="input-group">
-            <input type="text" class="form-control" id="amount" v-model="formattedAmount" @input="updateAmount" />
+            <input
+              type="text"
+              class="form-control"
+              id="amount"
+              v-model="formattedAmount"
+              @input="updateAmount"
+            />
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" disabled>원</button>
+              <button class="btn btn-outline-secondary" type="button" disabled>
+                원
+              </button>
             </div>
           </div>
         </div>
@@ -77,17 +135,39 @@
         </div>
         <div class="form-group">
           <label htmlFor="memo">내용 :</label>
-          <input type="text" class="form-control" id="memo" v-model="todoItem.memo" />
+          <input
+            type="text"
+            class="form-control"
+            id="memo"
+            v-model="todoItem.memo"
+          />
         </div>
         <div class="form-group">
-          <button type="button" class="btn btn-primary m-1" @click="addTodoHandler">저 장</button>
-          <button type="button" class="btn btn-primary m-1" @click="router.push('/todos')">취 소</button>
+          <button
+            type="button"
+            class="btn btn-primary m-1"
+            @click="addTodoHandler"
+          >
+            저 장
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary m-1"
+            @click="router.push('/todos')"
+          >
+            취 소
+          </button>
         </div>
       </div>
       <div v-if="selectedTab === '이체'">
         <div class="form-group">
           <label htmlfor="date">날짜:</label>
-          <input type="date" class="form-control" id="date" v-model="todoItem.date" />
+          <input
+            type="date"
+            class="form-control"
+            id="date"
+            v-model="todoItem.date"
+          />
         </div>
         <div class="form-group">
           <label for="type">분류:</label>
@@ -101,19 +181,44 @@
         <div class="form-group position-relative">
           <label htmlFor="amount">금액 :</label>
           <div class="input-group">
-            <input type="text" class="form-control" id="amount" v-model="formattedAmount" @input="updateAmount" />
+            <input
+              type="text"
+              class="form-control"
+              id="amount"
+              v-model="formattedAmount"
+              @input="updateAmount"
+            />
             <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" disabled>원</button>
+              <button class="btn btn-outline-secondary" type="button" disabled>
+                원
+              </button>
             </div>
           </div>
         </div>
         <div class="form-group">
           <label htmlFor="memo">내용 :</label>
-          <input type="text" class="form-control" id="memo" v-model="todoItem.memo" />
+          <input
+            type="text"
+            class="form-control"
+            id="memo"
+            v-model="todoItem.memo"
+          />
         </div>
         <div class="form-group">
-          <button type="button" class="btn btn-primary m-1" @click="addTodoHandler">저 장</button>
-          <button type="button" class="btn btn-primary m-1" @click="router.push('/todos')">취 소</button>
+          <button
+            type="button"
+            class="btn btn-primary m-1"
+            @click="addTodoHandler"
+          >
+            저 장
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary m-1"
+            @click="router.push('/todos')"
+          >
+            취 소
+          </button>
         </div>
       </div>
     </div>
@@ -140,10 +245,23 @@ const selectTab = (tab) => {
 const router = useRouter();
 const { addTodo } = inject('actions');
 const formattedAmount = ref(todoItem.value.amount);
-const income_types = ['용돈', '월급', '기타'];
-const expenses_types = ['월세', '교통', '식비', '기타'];
+const income_types = ['월급', '용돈', '부수입', '기타'];
+const expenses_types = [
+  '식비',
+  '교통/차량',
+  '문화생활',
+  '머트/편의점',
+  '패션/미용',
+  '생활용품',
+  '주거/통신',
+  '건강',
+  '교육',
+  '경조사/회비',
+  '부모님',
+  '기타',
+];
 const types = ['입금', '출금'];
-const assets = ['카드', '현금'];
+const assets = ['카드', '현금', '이체'];
 const addTodoHandler = () => {
   const { date, memo, asset, transaction, amount, type } = todoItem.value;
   todoItem.value.amount = todoItem.value.amount;

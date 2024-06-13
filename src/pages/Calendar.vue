@@ -195,7 +195,7 @@ function onDateClick(day) {
     const selectedDate = new Date(
       currentYear.value,
       currentMonth.value - 1,
-      day
+      day + 1
     );
     router.push({
       path: '/todos/add',

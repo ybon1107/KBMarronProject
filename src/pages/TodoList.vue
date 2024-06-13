@@ -7,13 +7,20 @@
     <!-- 상단에 총 지출, 총 수입, 총 사용금액 표시 -->
     <div class="row mt-3">
       <div class="col">
-        <h3>지출: {{ formatAmount(filteredTotalExpense) }} 원</h3>
+        <h3 style="color: blue">
+          수입: {{ formatAmount(filteredTotalIncome) }} 원
+        </h3>
       </div>
       <div class="col">
-        <h3>수입: {{ formatAmount(filteredTotalIncome) }} 원</h3>
+        <h3 style="color: red">
+          지출: {{ formatAmount(filteredTotalExpense) }} 원
+        </h3>
       </div>
       <div class="col">
-        <h3>전체: {{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원</h3>
+        <h3>
+          전체: {{ filteredTotalExpenseIncomeDiff < 0 ? '-' : ''
+          }}{{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원
+        </h3>
       </div>
     </div>
   </div>

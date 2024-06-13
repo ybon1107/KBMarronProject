@@ -1,15 +1,6 @@
 {
   "todos": [
     {
-      "id": "a736",
-      "type": "월세",
-      "transaction": "지출",
-      "asset": "카드",
-      "amount": "22223123",
-      "date": "2024-06-10",
-      "memo": "123"
-    },
-    {
       "id": "fda0",
       "type": "월급",
       "transaction": "수입",
@@ -71,6 +62,60 @@
       "amount": 5000,
       "date": "2024-06-05",
       "memo": "수금"
+    },
+    {
+      "id": "ce2c",
+      "type": "기타",
+      "transaction": "지출",
+      "asset": "현금",
+      "amount": 242,
+      "date": "2024-06-10",
+      "memo": "ㅍㅈㅍ"
+    },
+    {
+      "id": "ea9b",
+      "type": "교통",
+      "transaction": "지출",
+      "asset": "카드",
+      "amount": 3636,
+      "date": "2024-06-14",
+      "memo": "월급"
+    },
+    {
+      "id": "cd94",
+      "type": "입금",
+      "transaction": "이체",
+      "asset": "이체",
+      "amount": 23432,
+      "date": "2024-06-11",
+      "memo": "ㄹㅈㄷ"
+    },
+    {
+      "id": "1fe7",
+      "type": "출금",
+      "transaction": "이체",
+      "asset": "이체",
+      "amount": 3242,
+      "date": "2024-06-27",
+      "memo": "ㄹㄹㅈㄴ"
+    },
+    {
+      "id": "9c3d",
+      "type": "교통",
+      "transaction": "지출",
+      "asset": "카드",
+      "amount": 2323,
+      "date": "2024-06-05",
+      "memo": "ㄷㅇㅈㄷㄹ"
+    },
+    {
+      "id": "cabb",
+      "type": "월세",
+      "transaction": "지출",
+      "asset": "현금",
+      "amount": 455,
+      "date": "2024-06-14",
+      "memo": "54ㄷㄱㅎㄷ"
     }
   ]
 }
