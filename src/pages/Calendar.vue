@@ -1,8 +1,5 @@
 <template>
   <div class="calendar">
-    <div>
-      <h3>캘린더</h3>
-    </div>
     <h2>
       <a href="#" @click.prevent="onClickPrev">◀</a>
       {{ currentYear }}년 {{ currentMonth }}월
@@ -12,11 +9,7 @@
       <thead>
         <tr>
           <!-- 주의 이름을 표시하는 부분 -->
-          <td
-            v-for="(weekName, index) in weekNames"
-            :key="index"
-            :class="{ red: index === 0, blue: index === 6 }"
-          >
+          <td v-for="(weekName, index) in weekNames" :key="index" :class="{ red: index === 0, blue: index === 6 }">
             {{ weekName }}
           </td>
         </tr>
@@ -24,17 +17,8 @@
       <tbody>
         <!-- 각 주에 해당하는 날짜를 표시하는 부분 -->
         <tr v-for="(row, rowIndex) in currentCalendarMatrix" :key="rowIndex">
-          <td
-            v-for="(day, colIndex) in row"
-            :key="colIndex"
-            style="padding: 20px"
-            @click="day !== '' && onDateClick(day)"
-            :class="{ red: colIndex === 0, blue: colIndex === 6 }"
-          >
-            <span
-              v-if="day !== '' && isToday(currentYear, currentMonth, day)"
-              class="rounded"
-            >
+          <td v-for="(day, colIndex) in row" :key="colIndex" style="padding: 20px" @click="day !== '' && onDateClick(day)" :class="{ red: colIndex === 0, blue: colIndex === 6 }">
+            <span v-if="day !== '' && isToday(currentYear, currentMonth, day)" class="rounded">
               {{ day }}
             </span>
             <span v-else>
@@ -65,15 +49,7 @@ import axios from 'axios';
 
 const router = useRouter();
 
-const weekNames = [
-  '일요일',
-  '월요일',
-  '화요일',
-  '수요일',
-  '목요일',
-  '금요일',
-  '토요일',
-];
+const weekNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
 const rootYear = 1904;
 const rootDayOfWeekIndex = 4; // 2000년 1월 1일은 토요일
 const currentYear = ref(new Date().getFullYear());
@@ -99,10 +75,7 @@ async function fetchTodoList() {
 }
 
 function init() {
-  currentMonthStartWeekIndex = getStartWeek(
-    currentYear.value,
-    currentMonth.value
-  );
+  currentMonthStartWeekIndex = getStartWeek(currentYear.value, currentMonth.value);
   endOfDay = getEndOfDay(currentYear.value, currentMonth.value);
   initCalendar();
 }
@@ -190,20 +163,12 @@ function onClickNext() {
 
 function isToday(year, month, day) {
   const date = new Date();
-  return (
-    year === date.getFullYear() &&
-    month === date.getMonth() + 1 &&
-    day === date.getDate()
-  );
+  return year === date.getFullYear() && month === date.getMonth() + 1 && day === date.getDate();
 }
 
 function onDateClick(day) {
   if (day !== '') {
-    const selectedDate = new Date(
-      currentYear.value,
-      currentMonth.value - 1,
-      day
-    );
+    const selectedDate = new Date(currentYear.value, currentMonth.value - 1, day);
     router.push({
       path: '/todos/add',
       query: { date: selectedDate.toISOString().split('T')[0] },

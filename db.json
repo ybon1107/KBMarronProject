@@ -1,24 +1,6 @@
 {
   "todos": [
     {
-      "id": "a736",
-      "type": "월세",
-      "transaction": "지출",
-      "asset": "카드",
-      "amount": "22223123",
-      "date": "2024-06-10",
-      "memo": "123"
-    },
-    {
-      "id": "fda0",
-      "type": "월급",
-      "transaction": "수입",
-      "asset": "-",
-      "amount": "100000",
-      "date": "2024-06-14",
-      "memo": "월급"
-    },
-    {
       "id": "a337",
       "type": "교통",
       "transaction": "지출",
@@ -28,49 +10,40 @@
       "memo": "234"
     },
     {
-      "id": "e94a",
-      "type": "식비",
-      "transaction": "지출",
-      "asset": "이체",
-      "amount": 1000,
-      "date": "2024-06-13",
-      "memo": "zz"
-    },
-    {
-      "id": "12ea",
-      "type": "용돈",
-      "transaction": "수입",
-      "asset": "-",
-      "amount": 100000,
-      "date": "2024-06-17",
-      "memo": "ㅋㅋ"
-    },
-    {
-      "id": "1633",
+      "id": "8b8b",
       "type": "식비",
       "transaction": "지출",
       "asset": "카드",
-      "amount": 8500,
-      "date": "2024-06-14",
+      "amount": 19000,
+      "date": "2024-06-12",
       "memo": "밥"
     },
     {
-      "id": "9b84",
-      "type": "교통",
-      "transaction": "지출",
-      "asset": "카드",
-      "amount": 2000,
-      "date": "2024-06-13",
-      "memo": ""
-    },
-    {
-      "id": "ac17",
+      "id": "3412",
       "type": "입금",
       "transaction": "이체",
       "asset": "이체",
-      "amount": 5000,
-      "date": "2024-06-05",
-      "memo": "수금"
+      "amount": 10000,
+      "date": "2024-06-13",
+      "memo": "밥값정산"
+    },
+    {
+      "id": "b10c",
+      "type": "출금",
+      "transaction": "이체",
+      "asset": "이체",
+      "amount": 2000,
+      "date": "2024-06-11",
+      "memo": "인형뽑기"
+    },
+    {
+      "id": "42d3",
+      "type": "월급",
+      "transaction": "수입",
+      "asset": "-",
+      "amount": 3000000,
+      "date": "2024-06-17",
+      "memo": "월급_5월"
     }
   ]
 }

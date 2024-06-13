@@ -1,22 +1,4 @@
 <template>
-  <div>
-    <h3>내역</h3>
-  </div>
-
-  <div>
-    <!-- 상단에 총 지출, 총 수입, 총 사용금액 표시 -->
-    <div class="row mt-3">
-      <div class="col">
-        <h3>지출: {{ formatAmount(filteredTotalExpense) }} 원</h3>
-      </div>
-      <div class="col">
-        <h3>수입: {{ formatAmount(filteredTotalIncome) }} 원</h3>
-      </div>
-      <div class="col">
-        <h3>전체: {{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원</h3>
-      </div>
-    </div>
-  </div>
   <div class="row">
     <div class="col">
       <!-- 날짜 이동 버튼 -->
@@ -25,11 +7,21 @@
         <input type="month" class="form-control" id="month" v-model="selectedMonth" />
         <button @click="nextMonth">›</button>
       </div>
-
       <!-- 테이블 및 기타 컨텐츠 -->
+      <button @click="deleteSelectedTodos" class="btn btn-danger mb-2">선택 행 삭제</button>
       <table class="table">
         <thead>
           <tr>
+            <th colspan="6" style="padding: 10px">
+              <div style="display: flex; justify-content: space-between">
+                <span>지출: {{ formatAmount(filteredTotalExpense) }} 원</span>
+                <span>수입: {{ formatAmount(filteredTotalIncome) }} 원</span>
+                <span>전체: {{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원</span>
+              </div>
+            </th>
+          </tr>
+          <tr>
+            <th><input type="checkbox" v-model="selectAll" @change="toggleSelectAll" /></th>
             <th>날짜</th>
             <th>자산</th>
             <th>거래 유형</th>
@@ -39,7 +31,13 @@
           </tr>
         </thead>
         <tbody>
-          <TodoItem v-for="todoItem in filteredTodoList" :key="todoItem.id" :todoItem="todoItem" />
+          <TodoItem
+            v-for="todoItem in filteredTodoList"
+            :key="todoItem.id"
+            :todoItem="todoItem"
+            :selected="selectedIds.includes(todoItem.id)"
+            @select="toggleSelectItem(todoItem.id)"
+          />
         </tbody>
       </table>
     </div>
@@ -53,17 +51,26 @@
 </template>
 
 <script setup>
-import { ref, inject, computed } from 'vue';
+import { ref, reactive, inject, computed } from 'vue';
 import TodoItem from '@/components/TodoItem.vue';
+import axios from 'axios';
+import router from '@/router';
+
+const BASEURI = '/api/todos';
+const selectedIds = ref([]);
+const selectAll = ref(false);
 const todoList = inject('todoList');
 const currentDate = ref(new Date());
 const selectedMonth = ref(currentDate.value.toISOString().slice(0, 7));
+const states = reactive({
+  todoList,
+});
 const formatAmount = (amount) => {
   return new Intl.NumberFormat().format(Math.abs(amount));
 };
 const filteredTotalExpense = computed(() => {
   return filteredTodoList.value.reduce((total, todo) => {
-    if (todo.transaction === '지출' || todo.transaction === '이체') {
+    if (todo.transaction === '지출' || (todo.transaction === '이체' && todo.type === '출금')) {
       total += parseInt(todo.amount);
     }
     return total;
@@ -72,7 +79,7 @@ const filteredTotalExpense = computed(() => {
 
 const filteredTotalIncome = computed(() => {
   return filteredTodoList.value.reduce((total, todo) => {
-    if (todo.transaction === '수입') {
+    if (todo.transaction === '수입' || (todo.transaction === '이체' && todo.type === '입금')) {
       total += parseInt(todo.amount);
     }
     return total;
@@ -98,20 +105,45 @@ const filteredTodoList = computed(() => {
   });
 });
 
-const updateTodoList = async () => {
-  states.isLoading = true;
-  try {
-    const todoList = await fetchTodoList(currentYear.value, currentMonth.value);
-    states.todoList = todoList;
-  } catch (error) {
-    console.error('Error fetching todo list:', error);
-  } finally {
-    states.isLoading = false;
+const toggleSelectAll = () => {
+  if (selectAll.value) {
+    selectedIds.value = filteredTodoList.value.map((todo) => todo.id);
+  } else {
+    selectedIds.value = [];
   }
 };
 
-// updateTodoList();
-// 초기 데이터 로드
+const toggleSelectItem = (id) => {
+  const index = selectedIds.value.indexOf(id);
+  if (index > -1) {
+    selectedIds.value.splice(index, 1);
+  } else {
+    selectedIds.value.push(id);
+  }
+};
+const deleteSelectedTodos = async () => {
+  try {
+    const deletePromises = selectedIds.value.map((id) => axios.delete(BASEURI + `/${id}`));
+    const responses = await Promise.all(deletePromises);
+    responses.forEach((response, index) => {
+      if (response.status === 200) {
+        const id = selectedIds.value[index];
+        const todoIndex = states.todoList.findIndex((todo) => todo.id === id);
+        console.log(states.todoList);
+        console.log(todoIndex);
+        states.todoList.splice(todoIndex, 1);
+      } else {
+        alert('Todo 삭제 실패');
+      }
+    });
+    selectedIds.value = [];
+    selectAll.value = false;
+    router.push('/todos');
+    console.log('router');
+  } catch (error) {
+    alert('에러발생 :' + error);
+  }
+};
 
 const prevMonth = () => {
   const currentMonth = new Date(selectedMonth.value);

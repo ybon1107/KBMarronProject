@@ -1,5 +1,6 @@
 <template>
   <tr>
+    <td><input type="checkbox" :checked="selected" @change="$emit('select')" /></td>
     <td>{{ todoItem.date }}</td>
     <td>{{ todoItem.asset }}</td>
     <td
@@ -22,23 +23,20 @@
       <!-- 변경된 부분: formatAmount 함수를 사용하여 금액을 1000 단위로 구분합니다 -->
     </td>
     <td>{{ todoItem.memo }}</td>
-    <td>
-      <span class="float-end badge bg-secondary pointer m-1" @click="deleteTodo(todoItem.id)">삭제</span>
-    </td>
   </tr>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router';
 import { inject } from 'vue';
-import { defineProps } from 'vue';
+import { defineProps, defineEmits } from 'vue';
 
 defineProps({
   todoItem: { Type: Object, required: true },
+  selected: Boolean,
 });
-
+const emit = defineEmits(['select']);
 const router = useRouter();
-const { deleteTodo, toggleDone } = inject('actions');
 
 // 금액을 1000 단위로 구분하는 함수
 const formatAmount = (amount) => {
