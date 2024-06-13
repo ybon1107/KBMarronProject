@@ -11,7 +11,9 @@ import Header from '@/components/Header.vue';
 import axios from 'axios';
 import Loading from '@/components/Loading.vue';
 const BASEURI = '/api/todos';
-const states = reactive({ todoList: [] });
+const states = reactive({
+  todoList: [],
+});
 const fetchTodoList = async () => {
   states.isLoading = true;
   try {
@@ -26,10 +28,7 @@ const fetchTodoList = async () => {
   }
   states.isLoading = false;
 };
-const addTodo = async (
-  { type, transaction, asset, amount, date, memo },
-  successCallback
-) => {
+const addTodo = async ({ type, transaction, asset, amount, date, memo }, successCallback) => {
   states.isLoading = true;
   try {
     const payload = { type, transaction, asset, amount, date, memo };
@@ -45,10 +44,7 @@ const addTodo = async (
   }
   states.isLoading = false;
 };
-const updateTodo = async (
-  { id, transaction, type, asset, amount, date, memo },
-  successCallback
-) => {
+const updateTodo = async ({ id, transaction, type, asset, amount, date, memo }, successCallback) => {
   states.isLoading = true;
   try {
     const payload = { id, transaction, type, asset, amount, date, memo };
@@ -98,6 +94,7 @@ const toggleDone = async (id) => {
   }
   states.isLoading = false;
 };
+
 provide(
   'todoList',
   computed(() => states.todoList)

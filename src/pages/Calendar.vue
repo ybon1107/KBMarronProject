@@ -1,5 +1,8 @@
 <template>
   <div class="calendar">
+    <div>
+      <h3>캘린더</h3>
+    </div>
     <h2>
       <a href="#" @click.prevent="onClickPrev">◀</a>
       {{ currentYear }}년 {{ currentMonth }}월
@@ -30,6 +33,17 @@
             <span v-else>
               {{ day }}
             </span>
+            <div v-if="day !== '' && getTodoForDate(day).length > 0">
+              <div v-for="item in getTodoForDate(day)" :key="item.id">
+                <span
+                  :style="{
+                    color: item.transaction === '수입' ? 'blue' : 'red',
+                  }"
+                >
+                  {{ item.amount }}
+                </span>
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -38,8 +52,9 @@
 </template>
 
 <script setup>
-import { ref, defineEmits } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 
 const router = useRouter();
 
@@ -56,11 +71,25 @@ const rootYear = 1904;
 const rootDayOfWeekIndex = 4; // 2000년 1월 1일은 토요일
 const currentYear = ref(new Date().getFullYear());
 const currentMonth = ref(new Date().getMonth() + 1);
+const todoList = ref([]);
+
 let currentMonthStartWeekIndex = null;
 let currentCalendarMatrix = [];
 let endOfDay = null;
 
 init();
+onMounted(() => {
+  fetchTodoList();
+});
+
+async function fetchTodoList() {
+  try {
+    const response = await axios.get('/api/todos');
+    todoList.value = response.data;
+  } catch (error) {
+    console.error('Failed to fetch todo list:', error);
+  }
+}
 
 function init() {
   currentMonthStartWeekIndex = getStartWeek(
@@ -161,19 +190,32 @@ function isToday(year, month, day) {
   );
 }
 
-// 클릭시 addTodo로 이동시키는 코드 4:17 추가
 function onDateClick(day) {
   if (day !== '') {
     const selectedDate = new Date(
       currentYear.value,
       currentMonth.value - 1,
-      day + 1
+      day
     );
     router.push({
       path: '/todos/add',
       query: { date: selectedDate.toISOString().split('T')[0] },
     });
   }
+}
+
+function getTodoForDate(day) {
+  if (!todoList.value.length) {
+    return [];
+  }
+
+  const selectedDate = new Date(currentYear.value, currentMonth.value - 1, day);
+  return todoList.value.filter(
+    (item) =>
+      new Date(item.date).getDate() === selectedDate.getDate() &&
+      new Date(item.date).getMonth() === selectedDate.getMonth() &&
+      new Date(item.date).getFullYear() === selectedDate.getFullYear()
+  );
 }
 </script>
 
