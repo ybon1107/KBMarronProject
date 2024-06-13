@@ -18,7 +18,8 @@
       }"
     >
       <!-- 수입이면 +를, 지출이나 이체이면 -를 앞에 붙입니다 -->
-      {{ (todoItem.transaction === '수입' ? '+' : '-') + Math.abs(todoItem.amount) }} 원
+      {{ (todoItem.transaction === '수입' ? '+' : '-') + formatAmount(todoItem.amount) }}
+      <!-- 변경된 부분: formatAmount 함수를 사용하여 금액을 1000 단위로 구분합니다 -->
     </td>
     <td>{{ todoItem.memo }}</td>
     <td>
