@@ -12,7 +12,11 @@
           <th colspan="6" style="padding: 10px">
             <div style="display: flex; justify-content: space-between">
               <span>수입: {{ formatAmount(filteredTotalIncome) }} 원</span>
-              <span>지출: {{ formatAmount(filteredTotalExpense) }} 원</span>
+              <span
+                >지출:
+                {{ formatAmount(filteredTotalExpense) }}
+                원</span
+              >
               <span>전체: {{ filteredTotalExpenseIncomeDiff < 0 ? '-' : '' }}{{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원</span>
             </div>
           </th>
@@ -88,7 +92,7 @@ async function fetchTodoList() {
     });
     calculateTotals();
   } catch (error) {
-    console.error('할 일 목록을 불러오는 데 실패했습니다:', error);
+    console.error('목록을 불러오는 데 실패했습니다:', error);
   }
 }
 
@@ -189,6 +193,7 @@ function onClickPrev() {
     currentYear.value -= 1;
   }
   fetchTodoList();
+  updateCalendar(); // 달 변경 시 캘린더 갱신
 }
 
 function onClickNext() {
@@ -198,8 +203,13 @@ function onClickNext() {
     currentYear.value += 1;
   }
   fetchTodoList();
+  updateCalendar(); // 달 변경 시 캘린더 갱신
 }
-
+function updateCalendar() {
+  currentMonthStartWeekIndex = getStartWeek(currentYear.value, currentMonth.value);
+  endOfDay = getEndOfDay(currentYear.value, currentMonth.value);
+  initCalendar();
+}
 function isToday(year, month, day) {
   const date = new Date();
   return year === date.getFullYear() && month === date.getMonth() + 1 && day === date.getDate();

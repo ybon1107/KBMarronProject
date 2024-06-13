@@ -153,6 +153,7 @@ const income_types = ['용돈', '월급', '기타'];
 const expenses_types = ['월세', '교통', '식비', '기타'];
 const types = ['입금', '출금'];
 const assets = ['카드', '현금'];
+
 const addTodoHandler = () => {
   const { date, memo, asset, transaction, amount, type } = todoItem.value;
   todoItem.value.amount = todoItem.value.amount;
