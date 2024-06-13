@@ -1,9 +1,9 @@
 <template>
   <div class="calendar">
     <h2 class="text-center">
-      <a href="#" @click.prevent="onClickPrev">◀</a>
+      <a href="#" @click.prevent="onClickPrev" style="text-decoration: none; color: rgb(38, 57, 67)">◀</a>
       {{ currentYear }}년 {{ currentMonth }}월
-      <a href="#" @click.prevent="onClickNext">▶</a>
+      <a href="#" @click.prevent="onClickNext" style="text-decoration: none; color: rgb(38, 57, 67)">▶</a>
     </h2>
 
     <table class="table table-hover">
