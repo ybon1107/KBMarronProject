@@ -1,53 +1,55 @@
 <template>
-  <div class="calendar">
-    <div>
-      <h3>캘린더</h3>
-    </div>
-    <h2>
-      <a href="#" @click.prevent="onClickPrev">◀</a>
-      {{ currentYear }}년 {{ currentMonth }}월
-      <a href="#" @click.prevent="onClickNext">▶</a>
-    </h2>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <td v-for="(weekName, index) in weekNames" :key="index">
-            {{ weekName }}
-          </td>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
-          <td
-            v-for="(day, index2) in row"
-            :key="index2"
-            style="padding: 20px"
-            @click="day !== '' && onDateClick(day)"
-          >
-            <span
-              v-if="day !== '' && isToday(currentYear, currentMonth, day)"
-              class="rounded"
+  <div class="history-page">
+    <div class="calendar">
+      <div>
+        <h3>캘린더</h3>
+      </div>
+      <h2>
+        <a href="#" @click.prevent="onClickPrev">◀</a>
+        {{ currentYear }}년 {{ currentMonth }}월
+        <a href="#" @click.prevent="onClickNext">▶</a>
+      </h2>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <td v-for="(weekName, index) in weekNames" :key="index">
+              {{ weekName }}
+            </td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
+            <td
+              v-for="(day, index2) in row"
+              :key="index2"
+              style="padding: 20px"
+              @click="day !== '' && onDateClick(day)"
             >
-              {{ day }}
-            </span>
-            <span v-else>
-              {{ day }}
-            </span>
-            <div v-if="day !== '' && getTodoForDate(day).length > 0">
-              <div v-for="item in getTodoForDate(day)" :key="item.id">
-                <span
-                  :style="{
-                    color: item.transaction === '수입' ? 'blue' : 'red',
-                  }"
-                >
-                  {{ item.amount }}
-                </span>
+              <span
+                v-if="day !== '' && isToday(currentYear, currentMonth, day)"
+                class="rounded"
+              >
+                {{ day }}
+              </span>
+              <span v-else>
+                {{ day }}
+              </span>
+              <div v-if="day !== '' && getTodoForDate(day).length > 0">
+                <div v-for="item in getTodoForDate(day)" :key="item.id">
+                  <span
+                    :style="{
+                      color: item.transaction === '수입' ? 'blue' : 'red',
+                    }"
+                  >
+                    {{ item.amount }}
+                  </span>
+                </div>
               </div>
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -220,6 +222,10 @@ function getTodoForDate(day) {
 </script>
 
 <style scoped>
+.history-page {
+  margin-left: 250px;
+  margin-right: 50px;
+}
 .rounded {
   border-radius: 20px;
   border: solid 1px #ffffff;

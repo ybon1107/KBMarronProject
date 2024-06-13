@@ -1,70 +1,72 @@
 <template>
-  <div>
-    <h3>내역</h3>
-  </div>
+  <div class="history-page">
+    <div>
+      <h3>내역</h3>
+    </div>
 
-  <div>
-    <!-- 상단에 총 지출, 총 수입, 총 사용금액 표시 -->
-    <div class="row mt-3">
-      <div class="col">
-        <h3 style="color: blue">
-          수입: {{ formatAmount(filteredTotalIncome) }} 원
-        </h3>
-      </div>
-      <div class="col">
-        <h3 style="color: red">
-          지출: {{ formatAmount(filteredTotalExpense) }} 원
-        </h3>
-      </div>
-      <div class="col">
-        <h3>
-          전체: {{ filteredTotalExpenseIncomeDiff < 0 ? '-' : ''
-          }}{{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원
-        </h3>
+    <div>
+      <!-- 상단에 총 지출, 총 수입, 총 사용금액 표시 -->
+      <div class="row mt-3">
+        <div class="col">
+          <h3 style="color: blue">
+            수입: {{ formatAmount(filteredTotalIncome) }} 원
+          </h3>
+        </div>
+        <div class="col">
+          <h3 style="color: red">
+            지출: {{ formatAmount(filteredTotalExpense) }} 원
+          </h3>
+        </div>
+        <div class="col">
+          <h3>
+            전체: {{ filteredTotalExpenseIncomeDiff < 0 ? '-' : ''
+            }}{{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원
+          </h3>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col">
-      <!-- 날짜 이동 버튼 -->
-      <div class="date-navigation">
-        <button @click="prevMonth">‹</button>
-        <input
-          type="month"
-          class="form-control"
-          id="month"
-          v-model="selectedMonth"
-        />
-        <button @click="nextMonth">›</button>
-      </div>
-
-      <!-- 테이블 및 기타 컨텐츠 -->
-      <table class="table">
-        <thead>
-          <tr>
-            <th>날짜</th>
-            <th>자산</th>
-            <th>거래 유형</th>
-            <th>분류</th>
-            <th>금액</th>
-            <th>내용</th>
-          </tr>
-        </thead>
-        <tbody>
-          <TodoItem
-            v-for="todoItem in filteredTodoList"
-            :key="todoItem.id"
-            :todoItem="todoItem"
+    <div class="row">
+      <div class="col">
+        <!-- 날짜 이동 버튼 -->
+        <div class="date-navigation">
+          <button @click="prevMonth">‹</button>
+          <input
+            type="month"
+            class="form-control"
+            id="month"
+            v-model="selectedMonth"
           />
-        </tbody>
-      </table>
+          <button @click="nextMonth">›</button>
+        </div>
+
+        <!-- 테이블 및 기타 컨텐츠 -->
+        <table class="table">
+          <thead>
+            <tr>
+              <th>날짜</th>
+              <th>자산</th>
+              <th>거래 유형</th>
+              <th>분류</th>
+              <th>금액</th>
+              <th>내용</th>
+            </tr>
+          </thead>
+          <tbody>
+            <TodoItem
+              v-for="todoItem in filteredTodoList"
+              :key="todoItem.id"
+              :todoItem="todoItem"
+            />
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
-  <!-- "할일 추가" 버튼을 오른쪽 하단에 고정 -->
-  <div class="custom-btn-container">
-    <router-link class="custom-btn" to="/todos/add">
-      <i class="fas fa-plus"></i>
-    </router-link>
+    <!-- "할일 추가" 버튼을 오른쪽 하단에 고정 -->
+    <div class="custom-btn-container">
+      <router-link class="custom-btn" to="/todos/add">
+        <i class="fas fa-plus"></i>
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -156,6 +158,10 @@ const nextMonth = () => {
 </script>
 
 <style scoped>
+.history-page {
+  margin-left: 250px;
+  margin-right: 50px;
+}
 .date-navigation {
   display: flex;
   justify-content: center;

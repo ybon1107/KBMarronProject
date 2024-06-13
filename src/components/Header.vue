@@ -61,6 +61,7 @@ const isNavShow = ref(false);
 .navbar {
   width: 200px;
   height: 100%;
+  overflow: hidden;
 }
 
 .custom-navbar {
