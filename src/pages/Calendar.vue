@@ -28,7 +28,6 @@
         </tr>
       </thead>
       <tbody>
-        <!-- 각 주에 해당하는 날짜를 표시하는 부분 -->
         <tr v-for="(row, rowIndex) in currentCalendarMatrix" :key="rowIndex">
           <td v-for="(day, colIndex) in row" :key="colIndex" style="padding: 20px" @click="day !== '' && onDateClick(day)" :class="{ red: colIndex === 0, blue: colIndex === 6 }">
             <span v-if="day !== '' && isToday(currentYear, currentMonth, day)" class="rounded">
@@ -37,16 +36,14 @@
             <span v-else>
               {{ day }}
             </span>
-            <div v-if="day !== '' && getTodoForDate(day).length > 0" class="todo-list">
-              <div v-for="item in getTodoForDate(day)" :key="item.id" class="todo-item">
-                <span
-                  :style="{
-                    color: item.transaction === '수입' || (item.transaction === '이체' && item.type === '입금') ? 'blue' : 'red',
-                  }"
-                  class="amount"
-                >
-                  {{ item.amount }}
-                </span>
+            <!-- 수정된 부분: 같은 날짜에 대한 데이터를 합산하여 표시 -->
+            <div v-if="day !== ''">
+              <div v-if="getTodoForDate(day).length > 0" class="todo-list">
+                <div class="todo-item">
+                  <span v-if="getTotalIncomeForDate(day) > 0" style="color: blue">{{ formatAmount(getTotalIncomeForDate(day)) }}</span>
+                  <br v-if="getTotalIncomeForDate(day) > 0" />
+                  <span v-if="getTotalExpenseForDate(day) > 0" style="color: red">{{ formatAmount(getTotalExpenseForDate(day)) }}</span>
+                </div>
               </div>
             </div>
           </td>
@@ -63,16 +60,21 @@ import axios from 'axios';
 
 const router = useRouter();
 
+// 기존에 있던 변수들
 const weekNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
 const rootYear = 1904;
-const rootDayOfWeekIndex = 4; // 2000년 1월 1일은 토요일
+const rootDayOfWeekIndex = 4;
 const currentYear = ref(new Date().getFullYear());
 const currentMonth = ref(new Date().getMonth() + 1);
 const todoList = ref([]);
-
-let currentMonthStartWeekIndex = null;
 let currentCalendarMatrix = [];
 let endOfDay = null;
+let currentMonthStartWeekIndex = null;
+
+// 새로운 변수들
+const filteredTotalExpense = ref(0);
+const filteredTotalIncome = ref(0);
+const filteredTotalExpenseIncomeDiff = ref(0);
 
 init();
 onMounted(() => {
@@ -86,14 +88,13 @@ async function fetchTodoList() {
       const date = new Date(item.date);
       return date.getMonth() === currentMonth.value - 1 && date.getFullYear() === currentYear.value;
     });
-    calculateTotals(); // 데이터 필터링 후 총합 계산
+    calculateTotals();
   } catch (error) {
     console.error('할 일 목록을 불러오는 데 실패했습니다:', error);
   }
 }
 
 function calculateTotals() {
-  // 현재 달의 지출 총액 계산
   filteredTotalExpense.value = todoList.value.reduce((total, todo) => {
     if (todo.transaction === '지출' || (todo.transaction === '이체' && todo.type === '출금')) {
       total += parseInt(todo.amount);
@@ -101,7 +102,6 @@ function calculateTotals() {
     return total;
   }, 0);
 
-  // 현재 달의 수입 총액 계산
   filteredTotalIncome.value = todoList.value.reduce((total, todo) => {
     if (todo.transaction === '수입' || (todo.transaction === '이체' && todo.type === '입금')) {
       total += parseInt(todo.amount);
@@ -109,7 +109,6 @@ function calculateTotals() {
     return total;
   }, 0);
 
-  // 현재 달의 지출 수입 차액 계산
   filteredTotalExpenseIncomeDiff.value = filteredTotalIncome.value - filteredTotalExpense.value;
 }
 
@@ -188,7 +187,7 @@ function onClickPrev() {
     currentMonth.value = 12;
     currentYear.value -= 1;
   }
-  fetchTodoList(); // 이전 월로 이동 시 데이터 다시 가져오기
+  fetchTodoList();
 }
 
 function onClickNext() {
@@ -197,7 +196,7 @@ function onClickNext() {
     currentMonth.value = 1;
     currentYear.value += 1;
   }
-  fetchTodoList(); // 다음 월로 이동 시 데이터 다시 가져오기
+  fetchTodoList();
 }
 
 function isToday(year, month, day) {
@@ -229,18 +228,29 @@ function getTodoForDate(day) {
   );
 }
 
+function getTotalIncomeForDate(day) {
+  const todos = getTodoForDate(day);
+  return todos.reduce((total, todo) => {
+    if (todo.transaction === '수입' || (todo.transaction === '이체' && todo.type === '입금')) {
+      total += parseInt(todo.amount);
+    }
+    return total;
+  }, 0);
+}
+
+function getTotalExpenseForDate(day) {
+  const todos = getTodoForDate(day);
+  return todos.reduce((total, todo) => {
+    if (todo.transaction === '지출' || (todo.transaction === '이체' && todo.type === '출금')) {
+      total += parseInt(todo.amount);
+    }
+    return total;
+  }, 0);
+}
+
 const formatAmount = (amount) => {
   return new Intl.NumberFormat().format(Math.abs(amount));
 };
-
-// 현재 달의 지출 총액 계산
-const filteredTotalExpense = ref(0);
-
-// 현재 달의 수입 총액 계산
-const filteredTotalIncome = ref(0);
-
-// 현재 달의 지출 수입 차액 계산
-const filteredTotalExpenseIncomeDiff = ref(0);
 </script>
 
 <style scoped>
