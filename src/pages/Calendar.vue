@@ -11,15 +11,30 @@
     <table class="table table-hover">
       <thead>
         <tr>
-          <td v-for="(weekName, index) in weekNames" :key="index">
+          <!-- 주의 이름을 표시하는 부분 -->
+          <td
+            v-for="(weekName, index) in weekNames"
+            :key="index"
+            :class="{ red: index === 0, blue: index === 6 }"
+          >
             {{ weekName }}
           </td>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
-          <td v-for="(day, index2) in row" :key="index2" style="padding: 20px" @click="day !== '' && onDateClick(day)">
-            <span v-if="day !== '' && isToday(currentYear, currentMonth, day)" class="rounded">
+        <!-- 각 주에 해당하는 날짜를 표시하는 부분 -->
+        <tr v-for="(row, rowIndex) in currentCalendarMatrix" :key="rowIndex">
+          <td
+            v-for="(day, colIndex) in row"
+            :key="colIndex"
+            style="padding: 20px"
+            @click="day !== '' && onDateClick(day)"
+            :class="{ red: colIndex === 0, blue: colIndex === 6 }"
+          >
+            <span
+              v-if="day !== '' && isToday(currentYear, currentMonth, day)"
+              class="rounded"
+            >
               {{ day }}
             </span>
             <span v-else>
@@ -50,7 +65,15 @@ import axios from 'axios';
 
 const router = useRouter();
 
-const weekNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
+const weekNames = [
+  '일요일',
+  '월요일',
+  '화요일',
+  '수요일',
+  '목요일',
+  '금요일',
+  '토요일',
+];
 const rootYear = 1904;
 const rootDayOfWeekIndex = 4; // 2000년 1월 1일은 토요일
 const currentYear = ref(new Date().getFullYear());
@@ -71,12 +94,15 @@ async function fetchTodoList() {
     const response = await axios.get('/api/todos');
     todoList.value = response.data;
   } catch (error) {
-    console.error('Failed to fetch todo list:', error);
+    console.error('할 일 목록을 가져오는 데 실패했습니다:', error);
   }
 }
 
 function init() {
-  currentMonthStartWeekIndex = getStartWeek(currentYear.value, currentMonth.value);
+  currentMonthStartWeekIndex = getStartWeek(
+    currentYear.value,
+    currentMonth.value
+  );
   endOfDay = getEndOfDay(currentYear.value, currentMonth.value);
   initCalendar();
 }
@@ -118,7 +144,7 @@ function getEndOfDay(year, month) {
     case 2:
       return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28;
     default:
-      console.log('unknown month ' + month);
+      console.log('알 수 없는 월 ' + month);
       return 0;
   }
 }
@@ -164,12 +190,20 @@ function onClickNext() {
 
 function isToday(year, month, day) {
   const date = new Date();
-  return year === date.getFullYear() && month === date.getMonth() + 1 && day === date.getDate();
+  return (
+    year === date.getFullYear() &&
+    month === date.getMonth() + 1 &&
+    day === date.getDate()
+  );
 }
 
 function onDateClick(day) {
   if (day !== '') {
-    const selectedDate = new Date(currentYear.value, currentMonth.value - 1, day);
+    const selectedDate = new Date(
+      currentYear.value,
+      currentMonth.value - 1,
+      day
+    );
     router.push({
       path: '/todos/add',
       query: { date: selectedDate.toISOString().split('T')[0] },
@@ -193,6 +227,14 @@ function getTodoForDate(day) {
 </script>
 
 <style scoped>
+/* 일요일의 글자 색을 빨간색으로 설정 */
+.red {
+  color: red;
+}
+.blue {
+  color: blue;
+}
+
 .rounded {
   border-radius: 20px;
   border: solid 1px #ffffff;
