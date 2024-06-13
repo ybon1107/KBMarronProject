@@ -23,11 +23,29 @@
       </div>
       <div class="form-group">
         <label htmlfor="date">날짜:</label>
-        <input type="date" class="form-control" id="date" v-model="todoItem.date" />
+        <input
+          type="date"
+          class="form-control"
+          id="date"
+          v-model="todoItem.date"
+        />
       </div>
-      <div class="form-group">
+      <div class="form-group position-relative">
         <label htmlFor="amount">금액 :</label>
-        <input type="text" class="form-control" id="amount" v-model="todoItem.amount" @keypress="allowOnlyNumbers" />
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control"
+            id="amount"
+            v-model="formattedAmount"
+            @input="updateAmount"
+          />
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" disabled>
+              원
+            </button>
+          </div>
+        </div>
       </div>
       <div class="form-group">
         <label for="type">분류:</label>
@@ -49,15 +67,33 @@
       </div>
       <div class="form-group">
         <label htmlFor="memo">내용 :</label>
-        <input type="text" class="form-control" id="memo" v-model="todoItem.memo" />
+        <input
+          type="text"
+          class="form-control"
+          id="memo"
+          v-model="todoItem.memo"
+        />
       </div>
       <div class="form-group">
-        <button type="button" class="btn btn-primary m-1" @click="addTodoHandler">저 장</button>
-        <button type="button" class="btn btn-primary m-1" @click="router.push('/todos')">취 소</button>
+        <button
+          type="button"
+          class="btn btn-primary m-1"
+          @click="addTodoHandler"
+        >
+          저 장
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary m-1"
+          @click="router.push('/todos')"
+        >
+          취 소
+        </button>
       </div>
     </div>
   </div>
 </template>
+
 <script setup>
 import { inject, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
@@ -75,39 +111,48 @@ const todoItem = ref({
 const types = ['월세', '교통', '식비', '기타'];
 const assets = ['카드', '현금', '이체'];
 
+// 포맷팅된 금액을 위한 컴퓨티드 프로퍼티
+const formattedAmount = ref(todoItem.value.amount);
+
 const addTodoHandler = () => {
   const { date, memo, asset, transaction, amount, type } = todoItem.value;
   if (!date || !memo || !asset || !transaction || !amount || !type) {
     alert('모든 필드를 입력해주세요.');
     return;
   }
-  // 수입인 경우 '+'를 추가합니다.
-  if (transaction === '수입') {
-    todoItem.value.amount = todoItem.value.amount;
-  }
-  // 지출 또는 이체인 경우 '-'를 추가하고 빨간색으로 변경합니다.
-  else {
-    todoItem.value.amount = todoItem.value.amount;
-  }
   addTodo({ ...todoItem.value }, () => {
     router.push('/todos');
   });
 };
+
 onMounted(() => {
   const dateParam = router.currentRoute.value.query.date;
   if (dateParam) {
     todoItem.value.date = dateParam;
   }
 });
-// 숫자 이외의 키 입력시 막음
-const allowOnlyNumbers = (event) => {
-  const charCode = event.which ? event.which : event.keyCode;
-  if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-    event.preventDefault();
-  }
+
+const updateAmount = (event) => {
+  const value = event.target.value.replace(/[^0-9]/g, '');
+  todoItem.value.amount = parseInt(value) || 0;
+  formattedAmount.value = formatAmount(todoItem.value.amount);
+};
+
+// 금액을 1000 단위로 구분하는 함수
+const formatAmount = (amount) => {
+  return new Intl.NumberFormat().format(amount);
 };
 </script>
+
 <style scoped>
+/* 금액 입력란의 단위 '원' 버튼 스타일 */
+.input-group-append .btn {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  color: #000000;
+  font-weight: bold;
+}
+
 /* 금액 색상을 파란색으로 설정합니다. */
 .text-blue {
   color: blue;
