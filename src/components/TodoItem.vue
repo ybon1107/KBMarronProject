@@ -4,8 +4,8 @@
     <td>{{ todoItem.asset }}</td>
     <td
       :class="{
-        'text-blue': todoItem.transaction === '수입',
-        'text-red': todoItem.transaction === '지출' || todoItem.transaction === '이체',
+        'text-blue': todoItem.transaction === '수입' || (todoItem.transaction === '이체' && todoItem.type === '입금'),
+        'text-red': todoItem.transaction === '지출' || (todoItem.transaction === '이체' && todoItem.type === '출금'),
       }"
     >
       {{ todoItem.transaction }}
@@ -13,12 +13,12 @@
     <td>{{ todoItem.type }}</td>
     <td
       :class="{
-        'text-blue': todoItem.transaction === '수입',
-        'text-red': todoItem.transaction === '지출' || todoItem.transaction === '이체',
+        'text-blue': todoItem.transaction === '수입' || (todoItem.transaction === '이체' && todoItem.type === '입금'),
+        'text-red': todoItem.transaction === '지출' || (todoItem.transaction === '이체' && todoItem.type === '출금'),
       }"
     >
       <!-- 수입이면 +를, 지출이나 이체이면 -를 앞에 붙입니다 -->
-      {{ (todoItem.transaction === '수입' ? '+' : '-') + formatAmount(todoItem.amount) }}
+      {{ (todoItem.transaction === '수입' || (todoItem.transaction === '이체' && todoItem.type === '입금') ? '+' : '-') + formatAmount(todoItem.amount) }}
       <!-- 변경된 부분: formatAmount 함수를 사용하여 금액을 1000 단위로 구분합니다 -->
     </td>
     <td>{{ todoItem.memo }}</td>

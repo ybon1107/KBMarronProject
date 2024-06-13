@@ -1,15 +1,6 @@
 {
   "todos": [
     {
-      "id": "de87",
-      "type": "식비",
-      "transaction": "수입",
-      "asset": "현금",
-      "amount": "324324432",
-      "date": "2024-06-05",
-      "memo": "234"
-    },
-    {
       "id": "a736",
       "type": "월세",
       "transaction": "지출",
@@ -17,33 +8,6 @@
       "amount": "22223123",
       "date": "2024-06-10",
       "memo": "123"
-    },
-    {
-      "id": "eacc",
-      "type": "교통",
-      "transaction": "수입",
-      "asset": "카드",
-      "amount": "21312",
-      "date": "2024-06-12",
-      "memo": "er"
-    },
-    {
-      "id": "51c0",
-      "type": "월세",
-      "transaction": "이체",
-      "asset": "이체",
-      "amount": "13333",
-      "date": "2024-06-11",
-      "memo": "이체 테스트"
-    },
-    {
-      "id": "4c40",
-      "type": "기타",
-      "transaction": "수입",
-      "asset": "현금",
-      "amount": "1000000",
-      "date": "2024-06-11",
-      "memo": "월급"
     },
     {
       "id": "fda0",
@@ -59,18 +23,54 @@
       "type": "교통",
       "transaction": "지출",
       "asset": "이체",
-      "amount": "0234",
+      "amount": "234",
       "date": "2024-05-12",
       "memo": "234"
     },
     {
-      "id": "6dda",
-      "type": "교통",
+      "id": "e94a",
+      "type": "식비",
       "transaction": "지출",
       "asset": "이체",
-      "amount": 3331323,
+      "amount": 1000,
+      "date": "2024-06-13",
+      "memo": "zz"
+    },
+    {
+      "id": "12ea",
+      "type": "용돈",
+      "transaction": "수입",
+      "asset": "-",
+      "amount": 100000,
+      "date": "2024-06-17",
+      "memo": "ㅋㅋ"
+    },
+    {
+      "id": "1633",
+      "type": "식비",
+      "transaction": "지출",
+      "asset": "카드",
+      "amount": 8500,
       "date": "2024-06-14",
-      "memo": "버스"
+      "memo": "밥"
+    },
+    {
+      "id": "9b84",
+      "type": "교통",
+      "transaction": "지출",
+      "asset": "카드",
+      "amount": 2000,
+      "date": "2024-06-13",
+      "memo": ""
+    },
+    {
+      "id": "ac17",
+      "type": "입금",
+      "transaction": "이체",
+      "asset": "이체",
+      "amount": 5000,
+      "date": "2024-06-05",
+      "memo": "수금"
     }
   ]
 }

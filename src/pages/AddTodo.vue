@@ -146,23 +146,27 @@ const types = ['입금', '출금'];
 const assets = ['카드', '현금'];
 const addTodoHandler = () => {
   const { date, memo, asset, transaction, amount, type } = todoItem.value;
-  if (!date || !memo || !asset || !transaction || !amount || !type) {
-    alert('모든 필드를 입력해주세요.');
-    return;
-  }
-  // 수입인 경우 '+'를 추가합니다.
+  todoItem.value.amount = todoItem.value.amount;
+
   if (transaction === '수입') {
-    todoItem.value.amount = todoItem.value.amount;
+    if (!date || !transaction || !amount || !type) {
+      alert('모든 필드를 입력해주세요.');
+      return;
+    }
     todoItem.value.asset = '-';
-  }
-  // 지출 또는 이체인 경우 '-'를 추가하고 빨간색으로 변경합니다.
-  else {
-    todoItem.value.amount = todoItem.value.amount;
+  } else if (transaction === '지출') {
+    if (!date || !asset || !transaction || !amount || !type) {
+      alert('모든 필드를 입력해주세요.');
+      return;
+    }
+  } else {
+    if (!date || !transaction || !amount || !type) {
+      alert('모든 필드를 입력해주세요.');
+      return;
+    }
     todoItem.value.asset = '이체';
   }
-  // if (!asset) {
 
-  // }
   addTodo({ ...todoItem.value }, () => {
     router.push('/todos');
   });
