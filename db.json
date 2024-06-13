@@ -8,42 +8,6 @@
       "amount": "234",
       "date": "2024-05-12",
       "memo": "234"
-    },
-    {
-      "id": "ac17",
-      "type": "입금",
-      "transaction": "이체",
-      "asset": "이체",
-      "amount": 5000,
-      "date": "2024-06-05",
-      "memo": "수금"
-    },
-    {
-      "id": "0e3f",
-      "type": "입금",
-      "transaction": "이체",
-      "asset": "이체",
-      "amount": 134,
-      "date": "2024-06-04",
-      "memo": "134"
-    },
-    {
-      "id": "b317",
-      "type": "출금",
-      "transaction": "이체",
-      "asset": "이체",
-      "amount": 454,
-      "date": "2024-06-04",
-      "memo": "45"
-    },
-    {
-      "id": "8d4b",
-      "type": "식비",
-      "transaction": "지출",
-      "asset": "카드",
-      "amount": 1000000,
-      "date": "2024-06-20",
-      "memo": "222"
     }
   ]
 }

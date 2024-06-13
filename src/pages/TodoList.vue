@@ -1,34 +1,34 @@
 <template>
   <div class="row">
     <div class="col">
-      <!-- 날짜 이동 버튼 및 추가/삭제 버튼을 포함한 컨테이너 -->
-      <div class="header-container">
-        <!-- 날짜 이동 버튼 -->
-        <div class="date-navigation">
-          <button @click="prevMonth">‹</button>
-          <input type="month" class="form-control" id="month" v-model="selectedMonth" />
-          <button @click="nextMonth">›</button>
-        </div>
-        <!-- 플러스 버튼 및 삭제 버튼 -->
-        <div class="button-container">
-          <router-link class="custom-btn" to="/todos/add">
-            <i class="fas fa-plus"></i>
-          </router-link>
-          <div class="margin"></div>
-          <button @click="deleteSelectedTodos" class="custom-btn delete-btn">
-            <i class="fas fa-trash"></i>
-          </button>
-        </div>
+      <!-- 날짜 이동 버튼 -->
+      <div class="date-navigation">
+        <button @click="prevMonth">‹</button>
+        <input type="month" class="form-control" id="month" v-model="selectedMonth" />
+        <button @click="nextMonth">›</button>
       </div>
       <!-- 테이블 및 기타 컨텐츠 -->
+      <button @click="deleteSelectedTodos" class="btn btn-danger mb-2">선택 행 삭제</button>
       <table class="table">
         <thead>
           <tr>
             <th colspan="6" style="padding: 10px">
               <div style="display: flex; justify-content: space-between">
-                <span>수입: {{ formatAmount(filteredTotalIncome) }} 원</span>
-                <span>지출: {{ formatAmount(filteredTotalExpense) }} 원</span>
-                <span>전체: {{ filteredTotalExpenseIncomeDiff < 0 ? '-' : '' }}{{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원</span>
+                <span
+                  >수입:
+                  {{ formatAmount(filteredTotalIncome) }}
+                  원</span
+                >
+                <span
+                  >지출:
+                  {{ formatAmount(filteredTotalExpense) }}
+                  원</span
+                >
+                <span
+                  >전체:
+                  {{ formatAmount(filteredTotalExpenseIncomeDiff) }}
+                  원</span
+                >
               </div>
             </th>
           </tr>
@@ -55,6 +55,12 @@
         </tbody>
       </table>
     </div>
+  </div>
+  <!-- "할일 추가" 버튼을 오른쪽 하단에 고정 -->
+  <div class="custom-btn-container">
+    <router-link class="custom-btn" to="/todos/add">
+      <i class="fas fa-plus"></i>
+    </router-link>
   </div>
 </template>
 
@@ -137,6 +143,8 @@ const deleteSelectedTodos = async () => {
       if (response.status === 200) {
         const id = selectedIds.value[index];
         const todoIndex = states.todoList.findIndex((todo) => todo.id === id);
+        console.log(states.todoList);
+        console.log(todoIndex);
         states.todoList.splice(todoIndex, 1);
       } else {
         alert('Todo 삭제 실패');
@@ -145,6 +153,7 @@ const deleteSelectedTodos = async () => {
     selectedIds.value = [];
     selectAll.value = false;
     router.push('/todos');
+    console.log('router');
   } catch (error) {
     alert('에러발생 :' + error);
   }
@@ -168,9 +177,9 @@ const nextMonth = () => {
 </script>
 
 <style scoped>
-.header-container {
+.date-navigation {
   display: flex;
-  justify-content: space-between; /* 날짜 이동 버튼과 추가/삭제 버튼 사이를 떨어뜨립니다 */
+  justify-content: center;
   align-items: center;
   margin-bottom: 20px;
 }
@@ -199,17 +208,14 @@ const nextMonth = () => {
   margin: 0 10px;
 }
 
-.button-container {
-  display: flex;
-  align-items: center;
-}
-
-.margin {
-  width: 10px; /* 버튼 사이의 여백을 조정합니다 */
+.custom-btn-container {
+  position: fixed;
+  bottom: 140px;
+  right: 100px;
 }
 
 .custom-btn {
-  background-color: #28a745;
+  background-color: #ff6347;
   color: white;
   width: 60px;
   height: 60px;
@@ -222,24 +228,6 @@ const nextMonth = () => {
 }
 
 .custom-btn:hover {
-  background-color: #218838;
-}
-
-.delete-btn {
-  background-color: #dc3545;
-  border: none; /* border 제거 */
-}
-
-.delete-btn:hover {
-  background-color: #c82333;
-}
-
-.custom-btn i {
-  font-size: 24px;
-}
-
-.delete-btn i {
-  font-size: 24px;
-  color: white;
+  background-color: #ff4500;
 }
 </style>

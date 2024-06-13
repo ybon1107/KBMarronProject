@@ -1,22 +1,25 @@
 <template>
   <div class="calendar">
-    <h2>
+    <h2 class="text-center">
       <a href="#" @click.prevent="onClickPrev">◀</a>
       {{ currentYear }}년 {{ currentMonth }}월
       <a href="#" @click.prevent="onClickNext">▶</a>
     </h2>
 
+    <div class="row mt-3">
+      <div class="col">
+        <h3 style="color: blue">수입: {{ formatAmount(filteredTotalIncome) }} 원</h3>
+      </div>
+      <div class="col">
+        <h3 style="color: red">지출: {{ formatAmount(filteredTotalExpense) }} 원</h3>
+      </div>
+      <div class="col">
+        <h3>전체: {{ filteredTotalExpenseIncomeDiff < 0 ? '-' : '' }}{{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원</h3>
+      </div>
+    </div>
+
     <table class="table table-hover">
       <thead>
-        <tr>
-          <th colspan="6" style="padding: 10px">
-            <div style="display: flex; justify-content: space-between">
-              <span>수입: {{ formatAmount(filteredTotalIncome) }} 원</span>
-              <span>지출: {{ formatAmount(filteredTotalExpense) }} 원</span>
-              <span>전체: {{ filteredTotalExpenseIncomeDiff < 0 ? '-' : '' }}{{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원</span>
-            </div>
-          </th>
-        </tr>
         <tr>
           <!-- 주의 이름을 표시하는 부분 -->
           <td v-for="(weekName, index) in weekNames" :key="index" :class="{ red: index === 0, blue: index === 6 }" style="height: 25px">
@@ -25,6 +28,7 @@
         </tr>
       </thead>
       <tbody>
+        <!-- 각 주에 해당하는 날짜를 표시하는 부분 -->
         <tr v-for="(row, rowIndex) in currentCalendarMatrix" :key="rowIndex">
           <td v-for="(day, colIndex) in row" :key="colIndex" style="padding: 20px" @click="day !== '' && onDateClick(day)" :class="{ red: colIndex === 0, blue: colIndex === 6 }">
             <span v-if="day !== '' && isToday(currentYear, currentMonth, day)" class="rounded">
@@ -33,14 +37,15 @@
             <span v-else>
               {{ day }}
             </span>
-            <!-- 수정된 부분: 같은 날짜에 대한 데이터를 합산하여 표시 -->
-            <div v-if="day !== ''">
-              <div v-if="getTodoForDate(day).length > 0" class="todo-list">
-                <div class="todo-item">
-                  <span v-if="getTotalIncomeForDate(day) > 0" style="color: blue">{{ formatAmount(getTotalIncomeForDate(day)) }}</span>
-                  <br v-if="getTotalIncomeForDate(day) > 0" />
-                  <span v-if="getTotalExpenseForDate(day) > 0" style="color: red">{{ formatAmount(getTotalExpenseForDate(day)) }}</span>
-                </div>
+            <div v-if="day !== '' && getTodoForDate(day).length > 0">
+              <div v-for="item in getTodoForDate(day)" :key="item.id">
+                <span
+                  :style="{
+                    color: item.transaction === '수입' || (item.transaction === '이체' && item.type === '입금') ? 'blue' : 'red',
+                  }"
+                >
+                  {{ item.amount }}
+                </span>
               </div>
             </div>
           </td>
@@ -57,7 +62,6 @@ import axios from 'axios';
 
 const router = useRouter();
 
-// 기존에 있던 변수들
 const weekNames = ['일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일'];
 const rootYear = 1904;
 const rootDayOfWeekIndex = 4;
@@ -85,13 +89,14 @@ async function fetchTodoList() {
       const date = new Date(item.date);
       return date.getMonth() === currentMonth.value - 1 && date.getFullYear() === currentYear.value;
     });
-    calculateTotals();
+    calculateTotals(); // 데이터 필터링 후 총합 계산
   } catch (error) {
     console.error('할 일 목록을 불러오는 데 실패했습니다:', error);
   }
 }
 
 function calculateTotals() {
+  // 현재 달의 지출 총액 계산
   filteredTotalExpense.value = todoList.value.reduce((total, todo) => {
     if (todo.transaction === '지출' || (todo.transaction === '이체' && todo.type === '출금')) {
       total += parseInt(todo.amount);
@@ -99,6 +104,7 @@ function calculateTotals() {
     return total;
   }, 0);
 
+  // 현재 달의 수입 총액 계산
   filteredTotalIncome.value = todoList.value.reduce((total, todo) => {
     if (todo.transaction === '수입' || (todo.transaction === '이체' && todo.type === '입금')) {
       total += parseInt(todo.amount);
@@ -106,6 +112,7 @@ function calculateTotals() {
     return total;
   }, 0);
 
+  // 현재 달의 지출 수입 차액 계산
   filteredTotalExpenseIncomeDiff.value = filteredTotalIncome.value - filteredTotalExpense.value;
 }
 
@@ -184,7 +191,7 @@ function onClickPrev() {
     currentMonth.value = 12;
     currentYear.value -= 1;
   }
-  fetchTodoList();
+  fetchTodoList(); // 이전 월로 이동 시 데이터 다시 가져오기
 }
 
 function onClickNext() {
@@ -193,7 +200,7 @@ function onClickNext() {
     currentMonth.value = 1;
     currentYear.value += 1;
   }
-  fetchTodoList();
+  fetchTodoList(); // 다음 월로 이동 시 데이터 다시 가져오기
 }
 
 function isToday(year, month, day) {
@@ -251,6 +258,9 @@ const formatAmount = (amount) => {
 </script>
 
 <style scoped>
+.text-center {
+  text-align: center;
+}
 /* 일요일의 글자 색을 빨간색으로 설정 */
 .red {
   color: red;
@@ -274,23 +284,6 @@ thead {
 .table td {
   width: 150px; /* 각 날짜 칸의 너비를 조절하세요 */
   height: 100px; /* 각 날짜 칸의 높이를 조절하세요 */
-  position: relative; /* 상대 위치 지정 */
-}
-
-/* 할 일 목록 정렬 */
-.todo-list {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  text-align: right; /* 오른쪽 정렬 */
-}
-
-.todo-item {
-  margin-bottom: 5px; /* 할 일 사이의 간격 조정 */
-}
-
-.amount {
-  color: inherit; /* 기본 색상 상속 */
 }
 .table td:hover {
   background-color: #ffcc80; /* 연한 주황색 */

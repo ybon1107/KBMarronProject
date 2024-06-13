@@ -16,14 +16,9 @@
           <label htmlfor="date">날짜:</label>
           <input type="date" class="form-control" id="date" v-model="todoItem.date" />
         </div>
-        <div class="form-group position-relative">
+        <div class="form-group">
           <label htmlFor="amount">금액 :</label>
-          <div class="input-group">
-            <input type="text" class="form-control" id="amount" v-model="formattedAmount" @input="updateAmount" />
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" disabled>원</button>
-            </div>
-          </div>
+          <input type="text" class="form-control" id="amount" v-model="todoItem.amount" @keypress="allowOnlyNumbers" />
         </div>
         <div class="form-group">
           <label for="type">분류:</label>
@@ -48,14 +43,9 @@
           <label htmlfor="date">날짜:</label>
           <input type="date" class="form-control" id="date" v-model="todoItem.date" />
         </div>
-        <div class="form-group position-relative">
+        <div class="form-group">
           <label htmlFor="amount">금액 :</label>
-          <div class="input-group">
-            <input type="text" class="form-control" id="amount" v-model="formattedAmount" @input="updateAmount" />
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" disabled>원</button>
-            </div>
-          </div>
+          <input type="text" class="form-control" id="amount" v-model="todoItem.amount" @keypress="allowOnlyNumbers" />
         </div>
         <div class="form-group">
           <label for="type">분류:</label>
@@ -98,14 +88,9 @@
             </option>
           </select>
         </div>
-        <div class="form-group position-relative">
+        <div class="form-group">
           <label htmlFor="amount">금액 :</label>
-          <div class="input-group">
-            <input type="text" class="form-control" id="amount" v-model="formattedAmount" @input="updateAmount" />
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" disabled>원</button>
-            </div>
-          </div>
+          <input type="text" class="form-control" id="amount" v-model="todoItem.amount" @keypress="allowOnlyNumbers" />
         </div>
         <div class="form-group">
           <label htmlFor="memo">내용 :</label>
@@ -119,7 +104,6 @@
     </div>
   </div>
 </template>
-
 <script setup>
 import { inject, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
@@ -136,71 +120,51 @@ const selectedTab = ref(todoItem.value.transaction);
 const selectTab = (tab) => {
   selectedTab.value = tab;
   todoItem.value.transaction = tab;
-  resetTodoItem(tab);
-};
-
-const resetTodoItem = (tab) => {
-  todoItem.value.date = '';
-  todoItem.value.memo = '';
-  todoItem.value.asset = tab === '지출' ? '' : '-';
-  todoItem.value.amount = 0;
-  todoItem.value.type = '';
-  formattedAmount.value = formatAmount(todoItem.value.amount);
 };
 const router = useRouter();
 const { addTodo } = inject('actions');
-const formattedAmount = ref(todoItem.value.amount);
+
 const income_types = ['용돈', '월급', '기타'];
 const expenses_types = ['월세', '교통', '식비', '기타'];
 const types = ['입금', '출금'];
 const assets = ['카드', '현금'];
 const addTodoHandler = () => {
   const { date, memo, asset, transaction, amount, type } = todoItem.value;
-  todoItem.value.amount = todoItem.value.amount;
-
+  if (!date || !memo || !asset || !transaction || !amount || !type) {
+    alert('모든 필드를 입력해주세요.');
+    return;
+  }
+  // 수입인 경우 '+'를 추가합니다.
   if (transaction === '수입') {
-    if (!date || !transaction || !amount || !type) {
-      alert('모든 필드를 입력해주세요.');
-      return;
-    }
+    todoItem.value.amount = todoItem.value.amount;
     todoItem.value.asset = '-';
-  } else if (transaction === '지출') {
-    if (!date || !asset || !transaction || !amount || !type) {
-      alert('모든 필드를 입력해주세요.');
-      return;
-    }
-  } else {
-    if (!date || !transaction || !amount || !type) {
-      alert('모든 필드를 입력해주세요.');
-      return;
-    }
+  }
+  // 지출 또는 이체인 경우 '-'를 추가하고 빨간색으로 변경합니다.
+  else {
+    todoItem.value.amount = todoItem.value.amount;
     todoItem.value.asset = '이체';
   }
+  // if (!asset) {
 
+  // }
   addTodo({ ...todoItem.value }, () => {
     router.push('/todos');
   });
 };
-
 onMounted(() => {
   const dateParam = router.currentRoute.value.query.date;
   if (dateParam) {
     todoItem.value.date = dateParam;
   }
 });
-
-const updateAmount = (event) => {
-  const value = event.target.value.replace(/[^0-9]/g, '');
-  todoItem.value.amount = parseInt(value) || 0;
-  formattedAmount.value = formatAmount(todoItem.value.amount);
-};
-
-// 금액을 1000 단위로 구분하는 함수
-const formatAmount = (amount) => {
-  return new Intl.NumberFormat().format(amount);
+// 숫자 이외의 키 입력시 막음
+const allowOnlyNumbers = (event) => {
+  const charCode = event.which ? event.which : event.keyCode;
+  if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+    event.preventDefault();
+  }
 };
 </script>
-
 <style scoped>
 .tab-buttons {
   display: flex;
