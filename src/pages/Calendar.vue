@@ -31,18 +31,28 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <td v-for="(weekName, index) in weekNames" :key="index">
+                    <!-- 주의 이름을 표시하는 부분 -->
+                    <td
+                        v-for="(weekName, index) in weekNames"
+                        :key="index"
+                        :class="{ red: index === 0, blue: index === 6 }"
+                    >
                         {{ weekName }}
                     </td>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(row, index) in currentCalendarMatrix" :key="index">
+                <!-- 각 주에 해당하는 날짜를 표시하는 부분 -->
+                <tr
+                    v-for="(row, rowIndex) in currentCalendarMatrix"
+                    :key="rowIndex"
+                >
                     <td
-                        v-for="(day, index2) in row"
-                        :key="index2"
+                        v-for="(day, colIndex) in row"
+                        :key="colIndex"
                         style="padding: 20px"
                         @click="day !== '' && onDateClick(day)"
+                        :class="{ red: colIndex === 0, blue: colIndex === 6 }"
                     >
                         <span
                             v-if="
@@ -66,7 +76,9 @@
                                 <span
                                     :style="{
                                         color:
-                                            item.transaction === '수입'
+                                            item.transaction === '수입' ||
+                                            (item.transaction === '이체' &&
+                                                item.type === '입금')
                                                 ? 'blue'
                                                 : 'red',
                                     }"
@@ -83,7 +95,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 
@@ -305,6 +317,14 @@ const filteredTotalExpenseIncomeDiff = ref(0);
 </script>
 
 <style scoped>
+/* 일요일의 글자 색을 빨간색으로 설정 */
+.red {
+    color: red;
+}
+.blue {
+    color: blue;
+}
+
 .rounded {
     border-radius: 20px;
     border: solid 1px #ffffff;

@@ -41,7 +41,7 @@ const isNavShow = ref(false);
 
 .navbar {
   width: 200px; /* 네비게이션 바의 너비를 설정 */
-  height: 80vh; /* 네비게이션 바의 높이를 전체 화면 높이로 설정 */
+  height: 90vh; /* 네비게이션 바의 높이를 전체 화면 높이로 설정 */
 }
 
 .content {
