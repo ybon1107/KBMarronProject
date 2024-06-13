@@ -14,8 +14,8 @@
           <tr>
             <th colspan="6" style="padding: 10px">
               <div style="display: flex; justify-content: space-between">
-                <span>지출: {{ formatAmount(filteredTotalExpense) }} 원</span>
                 <span>수입: {{ formatAmount(filteredTotalIncome) }} 원</span>
+                <span>지출: {{ formatAmount(filteredTotalExpense) }} 원</span>
                 <span>전체: {{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원</span>
               </div>
             </th>

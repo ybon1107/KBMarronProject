@@ -5,6 +5,19 @@
       {{ currentYear }}년 {{ currentMonth }}월
       <a href="#" @click.prevent="onClickNext">▶</a>
     </h2>
+
+    <div class="row mt-3">
+      <div class="col">
+        <h3 style="color: blue">수입: {{ formatAmount(filteredTotalIncome) }} 원</h3>
+      </div>
+      <div class="col">
+        <h3 style="color: red">지출: {{ formatAmount(filteredTotalExpense) }} 원</h3>
+      </div>
+      <div class="col">
+        <h3>전체: {{ filteredTotalExpenseIncomeDiff < 0 ? '-' : '' }}{{ formatAmount(filteredTotalExpenseIncomeDiff) }} 원</h3>
+      </div>
+    </div>
+
     <table class="table table-hover">
       <thead>
         <tr>
@@ -24,13 +37,12 @@
             <span v-else>
               {{ day }}
             </span>
-            <div v-if="day !== '' && getTodoForDate(day).length > 0" class="todo-list">
-              <div v-for="item in getTodoForDate(day)" :key="item.id" class="todo-item">
+            <div v-if="day !== '' && getTodoForDate(day).length > 0">
+              <div v-for="item in getTodoForDate(day)" :key="item.id">
                 <span
                   :style="{
-                    color: item.transaction === '수입' ? 'blue' : 'red',
+                    color: item.transaction === '수입' || (item.transaction === '이체' && item.type === '입금') ? 'blue' : 'red',
                   }"
-                  class="amount"
                 >
                   {{ item.amount }}
                 </span>
@@ -69,10 +81,35 @@ onMounted(() => {
 async function fetchTodoList() {
   try {
     const response = await axios.get('/api/todos');
-    todoList.value = response.data;
+    todoList.value = response.data.filter((item) => {
+      const date = new Date(item.date);
+      return date.getMonth() === currentMonth.value - 1 && date.getFullYear() === currentYear.value;
+    });
+    calculateTotals(); // 데이터 필터링 후 총합 계산
   } catch (error) {
-    console.error('할 일 목록을 가져오는 데 실패했습니다:', error);
+    console.error('할 일 목록을 불러오는 데 실패했습니다:', error);
   }
+}
+
+function calculateTotals() {
+  // 현재 달의 지출 총액 계산
+  filteredTotalExpense.value = todoList.value.reduce((total, todo) => {
+    if (todo.transaction === '지출' || (todo.transaction === '이체' && todo.type === '출금')) {
+      total += parseInt(todo.amount);
+    }
+    return total;
+  }, 0);
+
+  // 현재 달의 수입 총액 계산
+  filteredTotalIncome.value = todoList.value.reduce((total, todo) => {
+    if (todo.transaction === '수입' || (todo.transaction === '이체' && todo.type === '입금')) {
+      total += parseInt(todo.amount);
+    }
+    return total;
+  }, 0);
+
+  // 현재 달의 지출 수입 차액 계산
+  filteredTotalExpenseIncomeDiff.value = filteredTotalIncome.value - filteredTotalExpense.value;
 }
 
 function init() {
@@ -118,7 +155,7 @@ function getEndOfDay(year, month) {
     case 2:
       return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0 ? 29 : 28;
     default:
-      console.log('알 수 없는 월 ' + month);
+      console.log('알 수 없는 월입니다: ' + month);
       return 0;
   }
 }
@@ -150,7 +187,7 @@ function onClickPrev() {
     currentMonth.value = 12;
     currentYear.value -= 1;
   }
-  init();
+  fetchTodoList(); // 이전 월로 이동 시 데이터 다시 가져오기
 }
 
 function onClickNext() {
@@ -159,7 +196,7 @@ function onClickNext() {
     currentMonth.value = 1;
     currentYear.value += 1;
   }
-  init();
+  fetchTodoList(); // 다음 월로 이동 시 데이터 다시 가져오기
 }
 
 function isToday(year, month, day) {
@@ -190,6 +227,19 @@ function getTodoForDate(day) {
       new Date(item.date).getFullYear() === selectedDate.getFullYear()
   );
 }
+
+const formatAmount = (amount) => {
+  return new Intl.NumberFormat().format(Math.abs(amount));
+};
+
+// 현재 달의 지출 총액 계산
+const filteredTotalExpense = ref(0);
+
+// 현재 달의 수입 총액 계산
+const filteredTotalIncome = ref(0);
+
+// 현재 달의 지출 수입 차액 계산
+const filteredTotalExpenseIncomeDiff = ref(0);
 </script>
 
 <style scoped>
@@ -217,23 +267,6 @@ thead {
 .table td {
   width: 150px; /* 각 날짜 칸의 너비를 조절하세요 */
   height: 100px; /* 각 날짜 칸의 높이를 조절하세요 */
-  position: relative; /* 상대 위치 지정 */
-}
-
-/* 할 일 목록 정렬 */
-.todo-list {
-  position: absolute;
-  bottom: 5px;
-  right: 5px;
-  text-align: right; /* 오른쪽 정렬 */
-}
-
-.todo-item {
-  margin-bottom: 5px; /* 할 일 사이의 간격 조정 */
-}
-
-.amount {
-  color: inherit; /* 기본 색상 상속 */
 }
 .table td:hover {
   background-color: #ffcc80; /* 연한 주황색 */
