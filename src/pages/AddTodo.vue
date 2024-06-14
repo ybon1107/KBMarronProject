@@ -123,6 +123,8 @@
 <script setup>
 import { inject, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useTodoStore } from '@/stores/todoStore';
+const todoStore = useTodoStore();
 const todoItem = ref({
   date: '',
   memo: '',
@@ -147,7 +149,6 @@ const resetTodoItem = (tab) => {
   formattedAmount.value = formatAmount(todoItem.value.amount);
 };
 const router = useRouter();
-const { addTodo } = inject('actions');
 const formattedAmount = ref(todoItem.value.amount);
 const income_types = ['용돈', '월급', '기타'];
 const expenses_types = ['월세', '교통', '식비', '기타'];
@@ -177,7 +178,7 @@ const addTodoHandler = () => {
     todoItem.value.asset = '이체';
   }
 
-  addTodo({ ...todoItem.value }, () => {
+  todoStore.addTodo({ ...todoItem.value }, () => {
     router.push('/todos');
   });
 };

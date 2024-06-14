@@ -71,16 +71,13 @@ import { ref, reactive, inject, computed } from 'vue';
 import TodoItem from '@/components/TodoItem.vue';
 import axios from 'axios';
 import router from '@/router';
-
+import { useTodoStore } from '@/stores/todoStore';
+const todoStore = useTodoStore();
 const BASEURI = '/api/todos';
 const selectedIds = ref([]);
 const selectAll = ref(false);
-const todoList = inject('todoList');
 const currentDate = ref(new Date());
 const selectedMonth = ref(currentDate.value.toISOString().slice(0, 7));
-const states = reactive({
-  todoList,
-});
 const formatAmount = (amount) => {
   return new Intl.NumberFormat().format(Math.abs(amount));
 };
@@ -108,7 +105,7 @@ const filteredTotalExpenseIncomeDiff = computed(() => {
 
 const filteredTodoList = computed(() => {
   // 선택된 월에 해당하는 항목만 필터링
-  const filteredItems = todoList.value.filter((todoItem) => {
+  const filteredItems = todoStore.todoList.filter((todoItem) => {
     const itemDate = new Date(todoItem.date);
     return itemDate.getFullYear() === new Date(selectedMonth.value).getFullYear() && itemDate.getMonth() === new Date(selectedMonth.value).getMonth();
   });
@@ -144,8 +141,8 @@ const deleteSelectedTodos = async () => {
     responses.forEach((response, index) => {
       if (response.status === 200) {
         const id = selectedIds.value[index];
-        const todoIndex = states.todoList.findIndex((todo) => todo.id === id);
-        states.todoList.splice(todoIndex, 1);
+        const todoIndex = todoStore.todoList.findIndex((todo) => todo.id === id);
+        todoStore.todoList.splice(todoIndex, 1);
       } else {
         alert('Todo 삭제 실패');
       }

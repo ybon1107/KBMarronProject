@@ -10,6 +10,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import '@fortawesome/fontawesome-free/js/all.js';
 
 const app = createApp(App);
+const pinia = createPinia();
 app.use(router);
-app.use(createPinia);
+app.use(pinia);
 app.mount('#app');

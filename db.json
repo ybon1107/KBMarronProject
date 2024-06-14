@@ -10,24 +10,6 @@
       "memo": "234"
     },
     {
-      "id": "0e3f",
-      "type": "입금",
-      "transaction": "이체",
-      "asset": "이체",
-      "amount": 134,
-      "date": "2024-06-04",
-      "memo": "134"
-    },
-    {
-      "id": "4727",
-      "type": "식비",
-      "transaction": "지출",
-      "asset": "카드",
-      "amount": 11111,
-      "date": "2024-06-22",
-      "memo": "23"
-    },
-    {
       "id": "2235",
       "type": "용돈",
       "transaction": "수입",
@@ -46,13 +28,49 @@
       "memo": "검사"
     },
     {
-      "id": "a40e",
+      "id": "7cc7",
       "type": "월급",
       "transaction": "수입",
       "asset": "-",
-      "amount": 1241241241,
-      "date": "2024-06-01",
-      "memo": "124124"
+      "amount": 3000000,
+      "date": "2024-06-10",
+      "memo": "5월_급여"
+    },
+    {
+      "id": "c49e",
+      "type": "식비",
+      "transaction": "지출",
+      "asset": "카드",
+      "amount": 14000,
+      "date": "2024-06-13",
+      "memo": "보쌈"
+    },
+    {
+      "id": "9add",
+      "type": "입금",
+      "transaction": "이체",
+      "asset": "이체",
+      "amount": 2000,
+      "date": "2024-06-14",
+      "memo": "몰루"
+    },
+    {
+      "id": "12d2",
+      "type": "출금",
+      "transaction": "이체",
+      "asset": "이체",
+      "amount": 5000,
+      "date": "2024-06-17",
+      "memo": "아무거나"
+    },
+    {
+      "id": "6c63",
+      "type": "월세",
+      "transaction": "지출",
+      "asset": "현금",
+      "amount": 3000000,
+      "date": "2024-06-18",
+      "memo": "ㄹㄹㄹ"
     }
   ]
 }
