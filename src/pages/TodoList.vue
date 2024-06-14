@@ -207,9 +207,9 @@ const nextMonth = () => {
 }
 
 .date-navigation button {
-  padding: 10px 20px;
+  padding: 5px 10px;
   margin: 0 5px;
-  background-color: #007bff;
+  background-color: #dbdbdb;
   color: white;
   border: none;
   border-radius: 5px;
@@ -237,8 +237,8 @@ const nextMonth = () => {
 .custom-btn {
   background-color: #28a745;
   color: white;
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -261,11 +261,11 @@ const nextMonth = () => {
 }
 
 .custom-btn i {
-  font-size: 24px;
+  font-size: 20px;
 }
 
 .delete-btn i {
-  font-size: 24px;
+  font-size: 20px;
   color: white;
 }
 </style>
